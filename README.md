@@ -60,7 +60,7 @@ curl http://localhost:8081/auth/app/fullUserList -H "Authorization: Bearer ed1f2
 use access token to get value
 ```bash
 curl -X GET \
-    http://localhost:8081/auth/app/userListEmail \
+    http://localhost:8081/auth/app/usersEmail \
     -H "Authorization: Bearer ed1f25a4-3d47-478b-9067-552aa066c2a6" \
     -F username[]=john \
     -F username[]=john2

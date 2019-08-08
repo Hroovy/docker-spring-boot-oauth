@@ -109,6 +109,18 @@ public class AppApiController {
         }
     }
 
+    @GetMapping("/app/allUsersEmail")
+    @PreAuthorize("#oauth2.hasScope('user_management')")
+    @ResponseBody
+    @JsonView(EntityJsonView.PUBLIC_VIEW.class)
+    public List<AppUser> offlineAllUsersEmail(Principal principal,
+                                              @RequestParam(value = "username[]") String[] usernameList
+    ) {
+        List<String> funcNos = Arrays.asList(usernameList);
+        List<AppUser> appUserList = this.appUserRepository.findAllByUsernameIn(funcNos);
+        return appUserList;
+    }
+
     @GetMapping("/app/fullUserList")
     @PreAuthorize("#oauth2.hasScope('full_user_list')")
     @ResponseBody
@@ -230,18 +242,6 @@ public class AppApiController {
         }
         List<AppUser> appUserList = this.appUserRepository.findAllByUsernameIn(usernameFiltered);
 
-        return appUserList;
-    }
-
-    @GetMapping("/app/allUsersEmail")
-    @PreAuthorize("#oauth2.hasScope('internal_trust_app')")
-    @ResponseBody
-    @JsonView(EntityJsonView.PUBLIC_VIEW.class)
-    public List<AppUser> offlineAllUsersEmail(Principal principal,
-                                              @RequestParam(value = "username[]") String[] usernameList
-    ) {
-        List<String> funcNos = Arrays.asList(usernameList);
-        List<AppUser> appUserList = this.appUserRepository.findAllByUsernameIn(funcNos);
         return appUserList;
     }
 }
