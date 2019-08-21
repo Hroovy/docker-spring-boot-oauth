@@ -16,61 +16,19 @@ services:
     #command: ['mysql', '-u', 'root', '-pexample' , '<', 'schema.sql']
     #command: mysql -u root -pexample < schema.sql
   
+  tomcat:
+    image: localhost:5001/tomcat9.0
+    restart: always
+    depends_on:
+      - db
+    ports:
+      - 8082:8080
+    volumes:
+      - ./:/root/external
+
   adminer:
     image: adminer
     restart: always
     ports:
-      - 8120:8080
+      - 8083:8080
 
-  node1:
-    image: maven-xserver # or maven:3.6.0-jdk-11 if you run without IDE
-    volumes:
-      - appdata:/root/:Z
-    command: bash
-    stdin_open: true
-    tty: true
-    working_dir: /root
-  node2:
-    image: maven-xserver # or maven:3.6.0-jdk-11 if you run without IDE
-    volumes:
-      - appdata:/root/:Z
-    command: bash
-    stdin_open: true
-    tty: true
-    working_dir: /root
-
-  loadbalance:
-    image: nginx:stable
-    restart: always
-    depends_on:
-      - node1
-      - node2
-    volumes:
-      - ./site.conf:/etc/nginx/conf.d/default.conf
-    ports:
-      - 8081:8081
-
-  compiler:
-    image: maven-xserver # or maven:3.6.0-jdk-11 if you run without IDE
-    volumes:
-      - appdata:/root/:Z
-      - ./:/root/external
-      # - mavendata:/root/.m2:Z
-    ports:
-      - 8080:8080
-    command: bash
-    stdin_open: true
-    tty: true
-    working_dir: /root
-
-volumes:
-  # mavendata:
-  #   external:
-  #     name: java_mavendata
-  appdata:
-    external:
-      name: java_workspace
-
-#in powershell
-# set-variable -name DISPLAY -value 10.61.110.225:0.0
-#docker exec -it -e DISPLAY=$DISPLAY docker-spring-boot-oauth_compiler_1 bash
