@@ -5,7 +5,7 @@
 
 	<groupId>kit.personal</groupId>
 	<artifactId>ssoclient</artifactId>
-	<version>0.0.2</version>
+	<version>0.0.2.ias</version>
 	<packaging>war</packaging>
 
 	<name>ssoclient</name>
