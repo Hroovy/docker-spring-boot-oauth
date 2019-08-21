@@ -123,11 +123,11 @@ insert into oauth_client_details(client_id, resource_ids, client_secret, scope, 
    );
 
 insert into oauth_client_details(client_id, resource_ids, client_secret, scope, authorized_grant_types, authorities, access_token_validity, refresh_token_validity,
-  web_server_redirect_uri)
+  web_server_redirect_uri, autoapprove)
  values ('centralEnquiry', null,
   /*thisshouldbealongpassword*/'$2a$10$kuCo/SsMa0d/ZbHhJWQXleXNtZePXIungi2gT8pBDDC1cl559rEUK',
-	 'read,write,full_user_list,user_management', 'password,authorization_code,refresh_token,implicit,client_credentials', 'user', 10800, 2592000,
-   'http://docker.ias.gov.mo:8082/ssoclient/login/oauth2/code/ias,http://localhost:8080/login/oauth2/code/ias,'
+	 'read', 'password,authorization_code,refresh_token,implicit,client_credentials', 'user', 10800, 2592000,
+   'http://docker.ias.gov.mo:8082/ssoclient/login/oauth2/code/ias,http://localhost:8080/login/oauth2/code/ias,', 'read'
    );
 
 
