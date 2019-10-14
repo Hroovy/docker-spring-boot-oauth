@@ -74,6 +74,12 @@
 			</properties>
 		</profile>
 		<profile>
+			<id>dev_local</id>
+			<properties>
+				<active.profile>dev_local</active.profile>
+			</properties>
+		</profile>
+		<profile>
 			<id>dev</id>
 			<properties>
 				<active.profile>dev</active.profile>
