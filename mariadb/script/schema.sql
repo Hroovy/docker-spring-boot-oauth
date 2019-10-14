@@ -108,27 +108,11 @@ CREATE TABLE SPRING_SESSION_ATTRIBUTES (
 	CONSTRAINT SPRING_SESSION_ATTRIBUTES_FK FOREIGN KEY (SESSION_PRIMARY_ID) REFERENCES SPRING_SESSION(PRIMARY_ID) ON DELETE CASCADE
 ) ENGINE=InnoDB ROW_FORMAT=DYNAMIC;
 
-insert into oauth_client_details(client_id, resource_ids, client_secret, scope, authorized_grant_types, authorities, access_token_validity, refresh_token_validity)
- values ('spring-security-oauth2-read-client', 'resource-server-rest-api',
-   /*spring-security-oauth2-read-client-password1234*/'$2a$04$WGq2P9egiOYoOFemBRfsiO9qTcyJtNRnPKNBl5tokP7IP.eZn93km',
-	  'read', 'password,authorization_code,refresh_token,implicit', 'user', 10800, 2592000);
-
-
-insert into oauth_client_details(client_id, resource_ids, client_secret, scope, authorized_grant_types, authorities, access_token_validity, refresh_token_validity,
-  web_server_redirect_uri)
- values ('spring-security-oauth2-read-write-client', 'resource-server-rest-api',
-  /*spring-security-oauth2-read-write-client-password1234*/'$2a$04$soeOR.QFmClXeFIrhJVLWOQxfHjsJLSpWrU1iGxcMGdu.a5hvfY4W',
-	 'read,write,full_user_list,user_management', 'password,authorization_code,refresh_token,implicit,client_credentials', 'user', 10800, 2592000,
-   'http://docker.ias.gov.mo:8082/ssoclient/login/oauth2/code/my-client-2,http://localhost:8080/login/oauth2/code/my-client-2,'
-   );
-
-insert into oauth_client_details(client_id, resource_ids, client_secret, scope, authorized_grant_types, authorities, access_token_validity, refresh_token_validity,
-  web_server_redirect_uri, autoapprove)
- values ('centralEnquiry', null,
-  /*thisshouldbealongpassword*/'$2a$10$kuCo/SsMa0d/ZbHhJWQXleXNtZePXIungi2gT8pBDDC1cl559rEUK',
-	 'read', 'password,authorization_code,refresh_token,implicit,client_credentials', 'user', 10800, 2592000,
-   'http://docker.ias.gov.mo:8082/ssoclient/login/oauth2/code/ias,http://localhost:8080/login/oauth2/code/ias,', 'read'
-   );
+INSERT INTO `oauth_client_details` (`client_id`, `resource_ids`, `client_secret`, `scope`, `authorized_grant_types`, `web_server_redirect_uri`, `authorities`, `access_token_validity`, `refresh_token_validity`, `additional_information`, `autoapprove`) VALUES
+('centralEnquiry',  NULL, '$2a$10$kuCo/SsMa0d/ZbHhJWQXleXNtZePXIungi2gT8pBDDC1cl559rEUK', 'read', 'password,authorization_code,refresh_token,implicit,client_credentials',  'http://docker.ias.gov.mo:8082/CentralEnquiry/login/oauth2/code/ias,http://localhost:8080/login/oauth2/code/ias,',  'user', 10800,  2592000,  NULL, 'read'),
+('spring-security-oauth2-read-client',  'resource-server-rest-api', '$2a$04$WGq2P9egiOYoOFemBRfsiO9qTcyJtNRnPKNBl5tokP7IP.eZn93km', 'read', 'password,authorization_code,refresh_token,implicit', NULL, 'user', 10800,  2592000,  NULL, NULL),
+('spring-security-oauth2-read-write-client',  'resource-server-rest-api', '$2a$04$soeOR.QFmClXeFIrhJVLWOQxfHjsJLSpWrU1iGxcMGdu.a5hvfY4W', 'read,write,full_user_list,user_management',  'password,authorization_code,refresh_token,implicit,client_credentials',  'http://docker.ias.gov.mo:8082/ssoclient/login/oauth2/code/my-client-2,http://localhost:8080/login/oauth2/code/my-client-2,', 'user', 10800,  2592000,  NULL, NULL),
+('voto',  'resource-server-rest-api', '$2a$10$kuCo/SsMa0d/ZbHhJWQXleXNtZePXIungi2gT8pBDDC1cl559rEUK', 'read', 'password,authorization_code,refresh_token,implicit,client_credentials',  'http://docker.ias.gov.mo:8082/voto/login/oauth2/code/ias,http://localhost:8080/login/oauth2/code/ias,',  'user', 10800,  2592000,  NULL, 'read');
 
 
 INSERT INTO app_user (id, username, password, email, last_modified_date, last_modified_by) VALUES (1,	'john',	/*456*/'$2a$10$cNwLajdYxWN6ao1ynC0PBugoJqTr2krISx1FFEQ2n8eXX5S.5OW2y',	'test@localhost.com', CURDATE(), 'sysadmin');
