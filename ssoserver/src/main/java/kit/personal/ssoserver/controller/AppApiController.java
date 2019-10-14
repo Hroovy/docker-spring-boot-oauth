@@ -63,6 +63,7 @@ public class AppApiController {
                 appUser.setUsername(user.username);
             }
 
+            appUser.setDisplayName(user.displayName);
             appUser.setPassword(passwordEncoder.encode(user.password));
             appUser.setEmail(user.email);
             appUser.setLastModifiedDate(new Date());
