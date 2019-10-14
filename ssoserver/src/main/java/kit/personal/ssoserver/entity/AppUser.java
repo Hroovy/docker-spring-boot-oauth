@@ -14,6 +14,8 @@ public class AppUser implements Serializable {
     private BigInteger id;
     @JsonView(EntityJsonView.PUBLIC_VIEW.class)
     private String username;
+    @JsonView(EntityJsonView.PUBLIC_VIEW.class)
+    private String displayName;
     private String password;
     @JsonView(EntityJsonView.PUBLIC_VIEW.class)
     private String email;
@@ -36,6 +38,15 @@ public class AppUser implements Serializable {
 
     public AppUser setUsername(String username) {
         this.username = username;
+        return this;
+    }
+
+    public String getDisplayName() {
+        return displayName;
+    }
+
+    public AppUser setDisplayName(String displayName) {
+        this.displayName = displayName;
         return this;
     }
 
