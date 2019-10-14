@@ -51,7 +51,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
     public void globalUserDetails(final AuthenticationManagerBuilder auth) throws Exception {
-        auth.authenticationProvider(activeDirectoryLdapAuthenticationProvider());
+        if (this.AD_URL != null && !"".equals(this.AD_URL)){
+        	auth.authenticationProvider(activeDirectoryLdapAuthenticationProvider());
+				}
         //auth.authenticationProvider(customAuthenticationProvider);
         auth.userDetailsService(userDetailsService);
     }

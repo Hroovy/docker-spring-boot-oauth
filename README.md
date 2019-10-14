@@ -65,3 +65,29 @@ curl -X GET \
     -F username[]=john \
     -F username[]=john2
 ```
+
+
+### test code grant
+```
+curl -v -X GET "http://localhost:8081/auth/oauth/authorize?client_id=spring-security-oauth2-read-write-client&response_type=code&state=5ca75bd30&redirect_uri=http%3A%2F%2Flocalhost%3A8080%2Flogin%2Foauth2%2Fcode%2Fmy-client-2"
+
+curl -v -X GET "http://localhost:8081/auth/login" --cookie "SESSION=ZWUyZWUzY2QtNTdhZi00ODE2LWFjNzItZWY1N2E1ZjJkZGI4"
+
+curl -v -X POST "http://localhost:8081/auth/login" --cookie "SESSION=ZWUyZWUzY2QtNTdhZi00ODE2LWFjNzItZWY1N2E1ZjJkZGI4" -F _csrf=b50d4f23-a77e-4ddb-970b-42e64509e136 -F username=john -F password=456
+
+curl -v -X GET "http://localhost:8081/auth/oauth/authorize?client_id=spring-security-oauth2-read-write-client&response_type=code&state=5ca75bd30&redirect_uri=http%3A%2F%2Flocalhost%3A8080%2Flogin%2Foauth2%2Fcode%2Fmy-client-2" --cookie "SESSION=OGM2NTdmYjgtMjA4Mi00MmIzLTk5MzEtNWQ2ZTU2MTM3NzMz"
+
+curl -v -X POST "http://localhost:8081/auth/oauth/authorize" --cookie "SESSION=OGM2NTdmYjgtMjA4Mi00MmIzLTk5MzEtNWQ2ZTU2MTM3NzMz" -F _csrf=16fb5657-9ed0-4833-a523-7e1e64aaa364 -F user_oauth_approval=true -F scope.read=true -F scope.write=true -F scope.full_user_list=false -F scope.user_management=false
+
+http://localhost:8080/login/oauth2/code/my-client-2?code=PEio1w&state=5ca75bd30
+
+curl -X POST \
+	http://localhost:8081/auth/oauth/token \
+	-F grant_type=authorization_code \
+	-F redirect_uri="http://localhost:8080/login/oauth2/code/my-client-2" \
+	-F code=PEio1w \
+	-F client_id=spring-security-oauth2-read-write-client \
+	-F client_secret=spring-security-oauth2-read-write-client-password1234
+
+{"access_token":"6e58306a-c371-4aa8-9dac-80083c7aab7f","token_type":"bearer","refresh_token":"d14c9aca-d7ab-49e6-bd05-5705aa6927d6","expires_in":10799,"scope":"read write"}
+```
