@@ -1,6 +1,6 @@
-package kit.personal.ssoserver.repo;
+package kit.personal.ssomanagement.repo;
 
-import kit.personal.ssoserver.entity.AppUserRole;
+import kit.personal.ssomanagement.entity.AppUserRole;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.repository.CrudRepository;
