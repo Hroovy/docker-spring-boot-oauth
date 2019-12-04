@@ -7,11 +7,12 @@ services:
     restart: always
     environment:
       MYSQL_ROOT_PASSWORD: example
-    ports:
-      - 3306:3306
+    #ports:
+    #  - 3306:3306
     volumes:
       - ./mariadb/conf.d:/etc/mysql/conf.d
       - ./mariadb/script/schema.sql:/docker-entrypoint-initdb.d/schema.sql
+      - ./mariadb/data:/var/lib/mysql
     working_dir: /app/
     #command: ['mysql', '-u', 'root', '-pexample' , '<', 'schema.sql']
     #command: mysql -u root -pexample < schema.sql
