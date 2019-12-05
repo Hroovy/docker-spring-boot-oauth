@@ -151,7 +151,7 @@ public class AppApiController {
     ) {
         int pageNum = Integer.valueOf(page);
         int limitNum = Integer.valueOf(limit);
-        Sort sort = new Sort(Sort.Direction.DESC, "username");
+        Sort sort = Sort.by(Sort.Direction.DESC, "username");
 
         Page<AppUserRole> roleList = roleRepository.findAllByAppId(principal.getName(), PageRequest.of(pageNum, limitNum, sort));
         return roleList;
