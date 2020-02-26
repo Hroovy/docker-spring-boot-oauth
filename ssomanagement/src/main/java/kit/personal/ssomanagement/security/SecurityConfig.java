@@ -41,13 +41,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             LOG.debug("disable auth");
         }
         http.authorizeRequests()
-                    .antMatchers("/userias").hasRole("IAS")
-                    .antMatchers("/usergoogle").hasRole("GOOGLE")
+                    .antMatchers("/api/**").hasRole("USER")
                     .antMatchers("/loginPage").permitAll()
                     .anyRequest().authenticated()
                 .and()
                 .oauth2Login()
-                    .loginPage("/loginPage")
+                    .loginPage("/oauth2/authorization/my-client-2")
                     .userInfoEndpoint()
                     .userService(this.userService())
                     .oidcUserService(this.oidcUserService())

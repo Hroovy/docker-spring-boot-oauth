@@ -1,7 +1,7 @@
 package kit.personal.ssomanagement.controller;
 
-import kit.personal.ssomanagement.entity.AppUserRole;
-import kit.personal.ssomanagement.repo.AppUserRoleRepository;
+import kit.personal.ssoentity.entity.AppUserRole;
+import kit.personal.ssoentity.repo.AppUserRoleRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

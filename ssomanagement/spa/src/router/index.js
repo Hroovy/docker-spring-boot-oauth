@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import AppList from '../components/AppList.vue'
+import Landing from '../components/Landing.vue'
 // import Home from '../views/Home.vue'
 
 Vue.use(VueRouter)
@@ -8,8 +8,23 @@ Vue.use(VueRouter)
 const routes = [
   {
     path: '/',
+    name: 'landing',
+    component: Landing
+  },
+  {
+    path: '/appList',
     name: 'appList',
-    component: AppList
+    component: () => import('../components/AppList.vue')
+  },
+  {
+    path: '/appUserList',
+    name: 'appUserList',
+    component: () => import('../components/AppUserList.vue')
+  },
+  {
+    path: '/appUserForm/:id',
+    name: 'appUserForm',
+    component: () => import('../components/AppUserForm.vue')
   },
   {
     path: '/appRole/:appId',

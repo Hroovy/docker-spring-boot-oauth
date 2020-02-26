@@ -1,11 +1,11 @@
 package kit.personal.ssoserver;
 
-import kit.personal.ssoserver.entity.AppUser;
-import kit.personal.ssoserver.entity.AppUserActing;
-import kit.personal.ssoserver.entity.AppUserRole;
-import kit.personal.ssoserver.repo.AppUserActingRepository;
-import kit.personal.ssoserver.repo.AppUserRepository;
-import kit.personal.ssoserver.repo.AppUserRoleRepository;
+import kit.personal.ssoentity.entity.AppUser;
+import kit.personal.ssoentity.entity.AppUserActing;
+import kit.personal.ssoentity.entity.AppUserRole;
+import kit.personal.ssoentity.repo.AppUserActingRepository;
+import kit.personal.ssoentity.repo.AppUserRepository;
+import kit.personal.ssoentity.repo.AppUserRoleRepository;
 import org.json.JSONObject;
 import org.junit.Before;
 import org.junit.Test;

@@ -2,8 +2,8 @@ package kit.personal.ssomanagement.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import kit.personal.ssomanagement.controller.exception.WrongParameterException;
-import kit.personal.ssomanagement.entity.AppUserRole;
-import kit.personal.ssomanagement.repo.AppUserRoleRepository;
+import kit.personal.ssoentity.entity.AppUserRole;
+import kit.personal.ssoentity.repo.AppUserRoleRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,10 +14,12 @@ import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.math.BigInteger;
-import java.util.*;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Optional;
 
 @Controller
 @RequestMapping(value = "/api")
@@ -36,7 +38,7 @@ public class RoleApiController {
 	){
 		int pageNum = Integer.valueOf(page);
 		int limitNum = Integer.valueOf(limit);
-		Sort sort = new Sort(Sort.Direction.DESC, "username");
+		Sort sort = Sort.by(Sort.Direction.DESC, "username");
 
 		Page<AppUserRole> roleList = roleRepository.findAllByAppId(appId, PageRequest.of(pageNum, limitNum, sort));
 		return roleList;

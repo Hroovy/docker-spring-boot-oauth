@@ -1,10 +1,7 @@
 package kit.personal.ssomanagement.controller;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import kit.personal.ssomanagement.controller.exception.WrongParameterException;
-import kit.personal.ssomanagement.entity.App;
-import kit.personal.ssomanagement.entity.AppUserRole;
-import kit.personal.ssomanagement.repo.AppRepository;
+import kit.personal.ssoentity.entity.App;
+import kit.personal.ssoentity.repo.AppRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,11 +10,10 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.*;
-
-import java.io.IOException;
-import java.math.BigInteger;
-import java.util.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller
 @RequestMapping(value = "/api")
@@ -34,7 +30,7 @@ public class AppApiController {
 	){
 		int pageNum = Integer.valueOf(page);
 		int limitNum = Integer.valueOf(limit);
-		Sort sort = new Sort(Sort.Direction.DESC, "clientId");
+		Sort sort = Sort.by(Sort.Direction.DESC, "clientId");
 
 		Page<App> roleList = appRepository.findAllBy(PageRequest.of(pageNum, limitNum, sort));
 		return roleList;
