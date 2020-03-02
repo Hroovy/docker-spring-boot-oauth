@@ -56,6 +56,7 @@ public class AppUserApiController {
 		appUser.setUsername(web.getUsername())
 				.setDisplayName(web.getDisplayName())
 				.setEmail(web.getEmail())
+				.setIsActive(web.getIsActive())
 				.setLastModifiedDate(new Date());
 
 		if (principal != null && principal.getName() != null){
@@ -75,5 +76,18 @@ public class AppUserApiController {
 	public AppUser read(@PathVariable BigInteger id){
 		Optional<AppUser> optional = appUserRepo.findById(id);
 		return optional.orElseThrow(() -> new ResourceNotFoundException("app User does not exist"));
+	}
+
+	@GetMapping( value = "/appUserSearch", produces = MediaType.APPLICATION_JSON_VALUE)
+	@ResponseBody
+	public Page<AppUser> searchByUsername(
+			@RequestParam(value = "name") String name,
+			@RequestParam(value = "pageNumber", required = false, defaultValue = "0") String page,
+			@RequestParam(value = "pageSize", required = false, defaultValue = "10") String limit
+	){
+		int pageNum = Integer.valueOf(page);
+		int limitNum = Integer.valueOf(limit);
+		Sort sort = Sort.by(Sort.Direction.DESC, "username");
+		return appUserRepo.findAllByUsernameContainsOrDisplayNameContains(name, name, PageRequest.of(pageNum, limitNum, sort));
 	}
 }

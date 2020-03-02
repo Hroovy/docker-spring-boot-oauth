@@ -27,6 +27,11 @@ const routes = [
     component: () => import('../components/AppUserForm.vue')
   },
   {
+    path: '/appUserFormSelf',
+    name: 'appUserFormSelf',
+    component: () => import('../components/AppUserFormSelf.vue')
+  },
+  {
     path: '/appRole/:appId',
     name: 'appRoleList',
     component: () => import('../components/AppRoleList.vue')

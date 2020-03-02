@@ -1,6 +1,5 @@
 <template>
     <div>
-        user list
         <div class="row">
             <div class="col-12">
                 <router-link class="ssonav" v-bind:to="{ name: 'landing' }">
@@ -9,14 +8,21 @@
             </div>
         </div>
         <hr/>
+        <div class="row">
+            <div class="col-md-12 ssonav">
+                User List
+            </div>
+        </div>
+        <hr/>
         <router-link v-bind:to="{ name: 'appUserForm', params: {id:'new'} } ">
             <PlusBoxIcon></PlusBoxIcon>Add
         </router-link>
         <div class="row">
-            <div class="col-2">Action</div>
-            <div class="col-2">Username</div>
-            <div class="col-2">Display Name</div>
+            <div class="col-2"></div>
+            <div class="col-2">帳號</div>
+            <div class="col-2">顯示名稱</div>
             <div class="col-2">Email</div>
+            <div class="col-2">使用狀態</div>
         </div>
         <div class="row" v-for="(appUser) in appUserList" v-bind:key="'appUser' + appUser.id">
             <div class="col-2">
@@ -27,6 +33,7 @@
             <div class="col-2">{{appUser.username}}</div>
             <div class="col-2">{{appUser.displayName}}</div>
             <div class="col-2">{{appUser.email}}</div>
+            <div class="col-2">{{(appUser.isActive == 'Y') ? '啟用' : '停用'}}</div>
         </div>
         <div class="">
             <nav aria-label="Page navigation example">

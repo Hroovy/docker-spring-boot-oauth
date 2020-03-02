@@ -10,7 +10,7 @@
         <form>
             <div class="form-group">
                 <label for="username">帳號</label>
-                <input type="text" class="form-control" id="username" v-model="appUser.username"/>
+                <input type="text" class="form-control" id="username" v-model="appUser.username" disabled/>
             </div>
             <div class="form-group">
                 <label for="displayName">顯示名稱</label>
@@ -28,21 +28,13 @@
                 <label for="email">email</label>
                 <input type="email" class="form-control" id="email" v-model="appUser.email"/>
             </div>
-            <div class="form-group">
-                <label for="isActive">使用狀態</label>
-                <select class="form-control" id="isActive" v-model="appUser.isActive">
-                    <option value="Y">啟用</option>
-                    <option value="N">停用</option>
-                </select>
-            </div>
             <div class="row">
                 <div class="col-12">
                     <a class="btn btn-primary" href="#" role="button" v-on:click="save">Save</a>
-                    <router-link class="btn btn-default" role="button"
-                                 v-bind:to="{ 'name': 'appUserList' }">
-                        Cancel
-                    </router-link>
                 </div>
+            </div>
+            <div>
+                {{ msg }}
             </div>
             <div class="row" v-bind:key="index" v-for="(error, index) in errors">
                 <div class="col-12 text-danger">
@@ -70,7 +62,7 @@
     import ArrowLeftBold from 'vue-material-design-icons/ArrowLeftBold.vue';
 
     export default {
-        name: 'AppRoleForm',
+        name: 'AppRoleFormSelf',
         data: function(){
             return{
                 appId : null,
@@ -87,6 +79,7 @@
                     data:{
                     }
                 },
+                msg : null,
                 errors:[],
             }
         },
@@ -101,18 +94,16 @@
         methods: {
             fetchRecord: function () {
                 let self = this;
-                let id = this.$route.params.id;
-                if (id !== 'new'){
-                    axios.get('api/appUser/' + id, self.axiosConfig)
-                        .then(function (response) {
-                            console.log(response);
-                            self.appUser = response.data;
-                            self.appUser.password = null;
-                        })
-                        .catch(function (error) {
-                            console.log(error);
-                        });
-                }
+                axios.get('selfServiceApi/getAppUser', self.axiosConfig)
+                    .then(function (response) {
+                        console.log(response);
+                        self.appUser = response.data;
+                        self.appUser.password = null;
+                    })
+                    .catch(function (error) {
+                        console.log(error);
+                    });
+
             },
             save: function(event){
                 event.preventDefault();
@@ -121,14 +112,25 @@
                 if (self.errors.length > 0){
                     return;
                 }
-                axios.post('api/appUser', self.appUser, self.axiosConfig)
+                axios.put('selfServiceApi/updateAppUser', self.appUser, self.axiosConfig)
                     .then(function (response) {
                         console.log(response.data);
-                        self.$router.push({ name: 'appUserList'});
+                        self.msg = "Saved. You could close the page manually.";
+                        setTimeout(() => {
+                            self.msg = "";
+                        }, 5000);
                     })
                     .catch(function (error) {
                         console.log(error);
+                        self.msg = "Sever Error. please contact system admin.";
+                        setTimeout(() => {
+                            self.msg = "";
+                        }, 5000);
                     });
+            },
+            closeTab : function (event) {
+                event.preventDefault();
+                window.close();
             },
             checkForm : function(){
                 this.errors = [];
@@ -150,7 +152,7 @@
                 if (id === 'new' && (this.appUser.password === null || this.appUser.password === "") ){
                     this.errors.push('password cannot be empty');
                 }
-            }
+            },
         },
         components: {
             ArrowLeftBold,

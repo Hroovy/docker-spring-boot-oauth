@@ -41,7 +41,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     @Override
     @Transactional(readOnly = true)
     public User loadUserByUsername(String username) throws UsernameNotFoundException {
-        AppUser appUser = userRepository.findOneByUsername(username);
+        AppUser appUser = userRepository.findOneByUsernameAndIsActive(username, "Y");
 
         if (appUser == null){
             throw new UsernameNotFoundException("Staff no not found");

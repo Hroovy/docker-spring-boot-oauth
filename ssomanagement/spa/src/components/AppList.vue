@@ -1,6 +1,14 @@
 <template>
     <div>
         <div class="row">
+            <div class="col-12">
+                <router-link class="ssonav" v-bind:to="{ name: 'landing' }">
+                    <HomeIcon class="icon-2x"></HomeIcon>Home
+                </router-link>
+            </div>
+        </div>
+        <hr/>
+        <div class="row">
             <div class="col-md-12 ssonav">
                 App List
             </div>
@@ -21,6 +29,8 @@
 <script>
 import axios from 'axios';
 import 'bootstrap/dist/css/bootstrap.css';
+import HomeIcon from 'vue-material-design-icons/Home.vue';
+
 export default {
     name: 'AppList',
     data: function(){
@@ -63,5 +73,19 @@ export default {
                 });
         },
     },
+    components: {
+        HomeIcon,
+    },
 }
 </script>
+
+<style scoped>
+    .material-design-icon.icon-2x {
+        height: 2em;
+        width: 2em;
+    }
+    .material-design-icon.icon-2x > .material-design-icon__svg {
+        height: 2em;
+        width: 2em;
+    }
+</style>

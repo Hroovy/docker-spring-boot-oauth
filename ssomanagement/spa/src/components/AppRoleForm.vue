@@ -10,7 +10,10 @@
         <form>
             <div class="form-group">
                 <label for="username">Username</label>
-                <input type="text" class="form-control" id="username" v-model="appUserRole.username"/>
+                <input type="text" class="form-control" id="username" v-model="appUserRole.username" v-on:input="search"/>
+            </div>
+            <div v-for="appUser in appUserList" v-bind:key="'appUser' + appUser.id">
+                <a href="#" v-on:click="(event) => {selectAppUser(event, appUser);}">{{appUser.username + ' ' + appUser.displayName}}</a>
             </div>
             <div class="form-group">
                 <label for="appRole">AppRole</label>
@@ -68,6 +71,7 @@
                     data:{
                     }
                 },
+                appUserList:[],
                 errors:[],
             }
         },
@@ -102,6 +106,23 @@
                             console.log(error);
                         });
                 }
+            },
+            selectAppUser(event, appUser){
+                event.preventDefault();
+                this.appUserRole.username = appUser.username;
+                this.appUserList = [];
+            },
+            search: function () {
+                let self = this;
+
+                axios.get('api/appUserSearch?name=' + self.appUserRole.username, self.axiosConfig)
+                    .then(function (response) {
+                        console.log(response);
+                        self.appUserList = response.data.content;
+                    })
+                    .catch(function (error) {
+                        console.log(error);
+                    });
             },
             save: function(event){
                 event.preventDefault();

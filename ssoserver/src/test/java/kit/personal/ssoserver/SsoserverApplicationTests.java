@@ -192,12 +192,14 @@ public class SsoserverApplicationTests {
 		user1.setEmail("user1@sso.localhost")
 				.setUsername("user1")
 				.setPassword(passwordEncoder.encode("1resu"))
+				.setIsActive("Y")
 				.setLastModifiedDate(now)
 				.setLastModifiedBy("systemadmin");
 		AppUser user2 = new AppUser();
 		user2.setEmail("user2@sso.localhost")
 				.setUsername("user2")
 				.setPassword(passwordEncoder.encode("2resu"))
+				.setIsActive("Y")
 				.setLastModifiedDate(now)
 				.setLastModifiedBy("systemadmin");
 		//save user, verify has ID value after save

@@ -32,6 +32,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Value("${application.disable_api_auth}")
     private boolean isDisableAPIAuth;
+    @Value("${spring.security.oauth2.client.registration.my-client-2.client-id}")
+    private String ssoClientId;
 
     @Override
     public void configure(HttpSecurity http) throws Exception {
@@ -41,7 +43,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             LOG.debug("disable auth");
         }
         http.authorizeRequests()
-                    .antMatchers("/api/**").hasRole("USER")
+                    .antMatchers("/api/csrf-token").hasAnyRole("ADMIN", "USER")
+                    .antMatchers("/api/**").hasRole("ADMIN")
+                    .antMatchers("/selfServiceApi/**").hasRole("USER")
                     .antMatchers("/loginPage").permitAll()
                     .anyRequest().authenticated()
                 .and()
@@ -70,8 +74,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             List<Object> objList = (List<Object>)stringObjectMap.get("authorities");
             for(Object obj: objList){
                 Map<String, String> innerMap = (Map<String, String>) obj;
-                if (innerMap.get("authority").contains("user")){
-                    mappedAuthorities.add(new SimpleGrantedAuthority("ROLE_IAS"));
+                if (innerMap.get("authority").contains(ssoClientId + "_ADMIN")){
+                    mappedAuthorities.add(new SimpleGrantedAuthority("ROLE_ADMIN"));
                 }
                 mappedAuthorities.add(new SimpleGrantedAuthority(innerMap.get("authority")));
             }

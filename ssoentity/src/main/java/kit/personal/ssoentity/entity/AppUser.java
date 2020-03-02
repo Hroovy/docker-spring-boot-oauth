@@ -19,6 +19,7 @@ public class AppUser implements Serializable {
     private String password;
     @JsonView(EntityJsonView.PUBLIC_VIEW.class)
     private String email;
+    private String isActive;
     //@DateTimeFormat(pattern = "dd/MM/yyyy HH:mm:ss")
     private Date lastModifiedDate;
     private String lastModifiedBy;
@@ -65,6 +66,15 @@ public class AppUser implements Serializable {
 
     public AppUser setEmail(String email) {
         this.email = email;
+        return this;
+    }
+
+    public String getIsActive() {
+        return isActive;
+    }
+
+    public AppUser setIsActive(String isActive) {
+        this.isActive = isActive;
         return this;
     }
 
