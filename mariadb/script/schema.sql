@@ -121,7 +121,7 @@ insert into oauth_client_details(client_id, resource_ids, client_secret, scope, 
  values ('ssomanagement', 'resource-server-rest-api',
   /*spring-security-oauth2-read-write-client-password1234*/'$2a$04$soeOR.QFmClXeFIrhJVLWOQxfHjsJLSpWrU1iGxcMGdu.a5hvfY4W',
    'read,write,full_user_list,user_management', 'password,authorization_code,refresh_token,implicit,client_credentials', 'user', 10800, 2592000,
-   'http://localhost:8082/ssomanagement/login/oauth2/code/my-client-2,http://site-dev.site:8082/ssomanagement/login/oauth2/code/my-client-2,','read,write'
+   'http://localhost:8082/ssomanagement/login/oauth2/code/my-client-2,http://docker.ias.gov.mo:8082/ssomanagement/login/oauth2/code/my-client-2,','read,write'
    );
 
 INSERT INTO app_user (id, username, password, email, display_name, is_active, last_modified_date, last_modified_by) VALUES (1,	'john',	/*456*/'$2a$10$cNwLajdYxWN6ao1ynC0PBugoJqTr2krISx1FFEQ2n8eXX5S.5OW2y',	'test@localhost.com', 'boss', 'Y', CURDATE(), 'sysadmin');
