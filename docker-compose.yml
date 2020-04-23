@@ -31,3 +31,4 @@ services:
     ports:
       - 8083:8080
 
+# docker run -it -p "8080:8080" -v "D:\\workspace:/root/external" -v "java_workspace:/root/" --rm --name compiler maven-xserver bash
