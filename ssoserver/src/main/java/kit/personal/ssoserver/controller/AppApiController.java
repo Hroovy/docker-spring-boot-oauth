@@ -63,11 +63,12 @@ public class AppApiController {
                 appUser.setUsername(user.username);
             }
 
-            appUser.setDisplayName(user.displayName);
-            appUser.setPassword(passwordEncoder.encode(user.password));
-            appUser.setEmail(user.email);
-            appUser.setLastModifiedDate(new Date());
-            appUser.setLastModifiedBy(principal.getName());
+            appUser.setDisplayName(user.displayName)
+                .setPassword(passwordEncoder.encode(user.password))
+                .setEmail(user.email)
+                .setIsActive(user.isActive)
+                .setLastModifiedDate(new Date())
+                .setLastModifiedBy(principal.getName());
             appUserList.add(appUser);
         }
         if (!appUserList.isEmpty()){

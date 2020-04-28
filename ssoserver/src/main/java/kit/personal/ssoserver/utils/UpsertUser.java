@@ -5,4 +5,5 @@ public class UpsertUser {
     public String password;
     public String email;
     public String displayName;
+    public String isActive;
 }
