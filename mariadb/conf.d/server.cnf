@@ -1,2 +1,6 @@
 [mysqld]
 #bind-address = 0.0.0.0
+server_audit_logging=ON
+server_audit_events=QUERY_DML_NO_SELECT
+[mariadb]
+plugin_load_add = server_audit
