@@ -23,13 +23,21 @@
 
             </div>
             <div class="col-md-3 table-header">
-                Username
+                <div class="form-group">
+                    <label for="filter.username">Username</label>
+                    <input type="text" class="form-control" id="filter.username" placeholder="filter"
+                        v-model="filter.username" v-on:change="(event)=>{fetchRecord();}">
+                </div>
             </div>
             <div class="col-md-3 table-header">
                 display name
             </div>
             <div class="col-md-3 table-header">
-                Role
+                <div class="form-group">
+                    <label for="filter.appRole">Role</label>
+                    <input type="text" class="form-control" id="filter.appRole" placeholder="filter"
+                        v-model="filter.appRole" v-on:change="(event)=>{fetchRecord();}">
+                </div>
             </div>
         </div>
         <hr/>
@@ -127,6 +135,10 @@
                 pageNumber: 0,
                 pageSize: 10,
                 forLoopCount: 0,
+                filter:{
+                    username:"",
+                    appRole:"",
+                },
             }
         },
         mounted: function(){
@@ -144,7 +156,8 @@
         methods: {
             fetchRecord:function(){
                 let self = this;
-                axios.get("api/role?appId=" + self.appId + '&pageNumber=' + self.pageNumber + '&pageSize=' + self.pageSize, self.axiosConfig)
+                axios.get("api/role?appId=" + self.appId + '&pageNumber=' + self.pageNumber + '&pageSize=' + self.pageSize 
+                    + "&username=" + self.filter.username + "&appRole=" + self.filter.appRole, self.axiosConfig)
                     .then(function (response) {
                         console.log(response);
                         self.appUserRoleList = response.data.content;

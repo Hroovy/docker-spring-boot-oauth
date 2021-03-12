@@ -111,26 +111,26 @@ CREATE TABLE SPRING_SESSION_ATTRIBUTES (
 	CONSTRAINT SPRING_SESSION_ATTRIBUTES_FK FOREIGN KEY (SESSION_PRIMARY_ID) REFERENCES SPRING_SESSION(PRIMARY_ID) ON DELETE CASCADE
 ) ENGINE=InnoDB ROW_FORMAT=DYNAMIC;
 
-insert into oauth_client_details(client_id, resource_ids, client_secret, scope, authorized_grant_types, authorities, access_token_validity, refresh_token_validity)
+insert into oauth_client_details(client_id, resource_ids, client_secret, scope, authorized_grant_types, authorities, access_token_validity, refresh_token_validity, display_name)
  values ('spring-security-oauth2-read-client', 'resource-server-rest-api',
    /*spring-security-oauth2-read-client-password1234*/'$2a$04$WGq2P9egiOYoOFemBRfsiO9qTcyJtNRnPKNBl5tokP7IP.eZn93km',
-	  'read', 'password,authorization_code,refresh_token,implicit', 'user', 10800, 2592000);
+	  'read', 'password,authorization_code,refresh_token,implicit', 'user', 10800, 2592000, 'READ CLIENT');
 
 
 insert into oauth_client_details(client_id, resource_ids, client_secret, scope, authorized_grant_types, authorities, access_token_validity, refresh_token_validity,
-  web_server_redirect_uri)
+  web_server_redirect_uri, display_name)
  values ('spring-security-oauth2-read-write-client', 'resource-server-rest-api',
   /*spring-security-oauth2-read-write-client-password1234*/'$2a$04$soeOR.QFmClXeFIrhJVLWOQxfHjsJLSpWrU1iGxcMGdu.a5hvfY4W',
 	 'read,write,full_user_list,user_management', 'password,authorization_code,refresh_token,implicit,client_credentials', 'user', 10800, 2592000,
-   'http://localhost:8080/login/oauth2/code/my-client-2,'
+   'http://localhost:8080/login/oauth2/code/my-client-2,', 'WRITE CLIENT'
    );
 
 insert into oauth_client_details(client_id, resource_ids, client_secret, scope, authorized_grant_types, authorities, access_token_validity, refresh_token_validity,
-  web_server_redirect_uri,autoapprove)
+  web_server_redirect_uri,autoapprove,display_name)
  values ('ssomanagement', 'resource-server-rest-api',
   /*spring-security-oauth2-read-write-client-password1234*/'$2a$04$soeOR.QFmClXeFIrhJVLWOQxfHjsJLSpWrU1iGxcMGdu.a5hvfY4W',
    'read,write,full_user_list,user_management', 'password,authorization_code,refresh_token,implicit,client_credentials', 'user', 10800, 2592000,
-   'http://localhost:8082/ssomanagement/login/oauth2/code/my-client-2,http://site-dev.site:8082/ssomanagement/login/oauth2/code/my-client-2,','read,write'
+   'http://localhost:8082/ssomanagement/login/oauth2/code/my-client-2,http://site-dev.site:8082/ssomanagement/login/oauth2/code/my-client-2,','read,write', 'Management'
    );
 
 INSERT INTO app_user (id, username, password, email, display_name, is_active, last_modified_date, last_modified_by) VALUES (1,	'john',	/*456*/'$2a$10$cNwLajdYxWN6ao1ynC0PBugoJqTr2krISx1FFEQ2n8eXX5S.5OW2y',	'test@localhost.com', 'boss', 'Y', CURDATE(), 'sysadmin');

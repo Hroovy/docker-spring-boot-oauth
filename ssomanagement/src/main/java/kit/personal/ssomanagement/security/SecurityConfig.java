@@ -67,8 +67,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         return (userRequest) -> {
             // Delegate to the default implementation for loading a user
             OAuth2User oAuth2User = delegate.loadUser(userRequest);
-
-            OAuth2AccessToken accessToken = userRequest.getAccessToken();
             Set<GrantedAuthority> mappedAuthorities = new HashSet<>();
             Map<String, Object> stringObjectMap = oAuth2User.getAttributes();
             List<Object> objList = (List<Object>)stringObjectMap.get("authorities");

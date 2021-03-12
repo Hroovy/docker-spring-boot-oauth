@@ -1,20 +1,5 @@
 package kit.personal.ssomanagement.controller;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import kit.personal.ssomanagement.controller.exception.WrongParameterException;
-import kit.personal.ssoentity.entity.AppUserRole;
-import kit.personal.ssoentity.repo.AppUserRoleRepository;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Sort;
-import org.springframework.http.MediaType;
-import org.springframework.security.core.Authentication;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.*;
-
 import java.io.IOException;
 import java.math.BigInteger;
 import java.util.Date;
@@ -22,11 +7,28 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
+import org.springframework.http.MediaType;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.*;
+
+import kit.personal.ssoentity.entity.AppUserRole;
+import kit.personal.ssoentity.repo.AppUserRoleRepository;
+import kit.personal.ssomanagement.controller.exception.WrongParameterException;
+
 @Controller
 @RequestMapping(value = "/api")
 public class RoleApiController {
 	@Autowired
 	AppUserRoleRepository roleRepository;
+	@SuppressWarnings("unused")
 	private static Logger LOG = LoggerFactory.getLogger(RoleApiController.class);
 
 
@@ -34,6 +36,8 @@ public class RoleApiController {
 	@ResponseBody
 	public Page<AppUserRole> getRoleList(
 			@RequestParam(value = "appId") String appId,
+			@RequestParam(value = "appRole", required = false, defaultValue = "") String appRole,
+			@RequestParam(value = "username", required = false, defaultValue = "") String username,
 			@RequestParam(value = "pageNumber", required = false, defaultValue = "0") String page,
 			@RequestParam(value = "pageSize", required = false, defaultValue = "10") String limit
 	){
@@ -41,7 +45,8 @@ public class RoleApiController {
 		int limitNum = Integer.valueOf(limit);
 		Sort sort = Sort.by(Sort.Direction.DESC, "username");
 
-		Page<AppUserRole> roleList = roleRepository.findAllByAppId(appId, PageRequest.of(pageNum, limitNum, sort));
+		Page<AppUserRole> roleList = roleRepository.findAllByAppIdAndAppRoleContainsAndUsernameContains(
+			appId, appRole, username, PageRequest.of(pageNum, limitNum, sort));
 		return roleList;
 	}
 

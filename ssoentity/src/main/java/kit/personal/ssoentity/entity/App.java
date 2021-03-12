@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.Transient;
 
 @Entity(name = "oauth_client_details")
 @JsonIgnoreProperties(ignoreUnknown = true)
@@ -21,6 +22,17 @@ public class App {
 	private String additionalInformation;
 	private String autoapprove;
 	private String displayName;
+	@Transient
+	private boolean updateClientSecret;
+
+	public boolean isUpdateClientSecret() {
+		return this.updateClientSecret;
+	}
+
+	public App setUpdateClientSecret(boolean updateClientSecret) {
+		this.updateClientSecret = updateClientSecret;
+		return this;
+	}
 
 	public String getClientId() {
 		return clientId;

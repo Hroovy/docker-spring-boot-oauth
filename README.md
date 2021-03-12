@@ -21,6 +21,14 @@ curl -X POST \
 	-F password=456 \
 	-F client_id=spring-security-oauth2-read-write-client \
 	-F client_secret=spring-security-oauth2-read-write-client-password1234
+
+curl -X POST \
+	http://localhost:8081/auth/oauth/token \
+	-F grant_type=password \
+	-F username=john \
+	-F password=456 \
+	-F client_id=spring-security-oauth2-read-client \
+	-F client_secret=spring-security-oauth2-read-client-password1234
 ```
 
 use access token to get value

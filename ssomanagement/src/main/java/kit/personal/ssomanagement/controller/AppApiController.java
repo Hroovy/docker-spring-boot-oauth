@@ -34,6 +34,7 @@ public class AppApiController {
 	ActingRoleRepository actingRoleRepository;
 	@Autowired
 	LoginChecker loginChecker;
+	@SuppressWarnings("unused")
 	private static Logger LOG = LoggerFactory.getLogger(AppApiController.class);
 
 	@GetMapping( value = "/app", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -92,7 +93,9 @@ public class AppApiController {
 	){
 		//TODO need to skip password if if is not updated
 		PasswordEncoder encoder = new BCryptPasswordEncoder();
-		app.setClientSecret(encoder.encode(app.getClientSecret()));
+		if (app.isUpdateClientSecret()){
+			app.setClientSecret(encoder.encode(app.getClientSecret()));
+		}
 		appRepository.save(app);
 		return app;
 	}

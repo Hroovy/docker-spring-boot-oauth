@@ -6,6 +6,10 @@
             </div>
         </div>
         <hr/>
+        <router-link :to='{name:"appDetailForm", params:{clientId : "new", appName: "draft" }}'>
+            <PlusBoxIcon></PlusBoxIcon>Add
+        </router-link>
+        <hr/>
         <div v-bind:key="index" v-for="(app,index) in appList">
             <div class="row top-buffer">
                 <div class="col-md-1" v-if="isAdmin()">
@@ -19,17 +23,30 @@
                 </div>
             </div>
         </div>
+        <hr/>
+        <PagingComp :pageNumber="pageNumber"
+            :getPreviousPage="getPreviousPage"
+            :getNextPage="getNextPage"
+        >
+
+        </PagingComp>
     </div>
 </template>
 <script>
 import axios from 'axios';
 import {isAdminCheck} from '@/utils/utilsFunction.js';
+import PlusBoxIcon from 'vue-material-design-icons/PlusBox.vue';
+import PagingComp from '@/components/PagingComp.vue';
 
 export default {
     name: 'AppList',
+    components:{
+        PlusBoxIcon,PagingComp
+    },
     data: function(){
         return{
             pageNumber: 0,
+            totalPages: 1,
             appList: [],
             axiosConfig: {
                 headers : {
@@ -45,6 +62,9 @@ export default {
     mounted: function(){
         this.axiosConfig = this.$store.state.axiosConfig;
         this.loginInfo = this.$store.state.loginInfo;
+        if (this.$route.query.pageNumber != null){
+            this.pageNumber = parseInt(this.$route.query.pageNumber);
+        }
         this.fetchRecord();
     },
     methods: {
@@ -54,6 +74,7 @@ export default {
                 .then(function (response) {
                     console.log(response);
                     self.appList = response.data.content;
+                    self.totalPages = response.data.totalPages;
                 })
                 .catch(function (error) {
                     console.log(error);
@@ -65,8 +86,25 @@ export default {
         updateAppName(appName){
             this.$store.commit('updateAppName', appName);
         },
+        getPreviousPage(event){
+            event.preventDefault();
+            if (this.pageNumber > 0){
+                this.pageNumber = this.pageNumber - 1;
+                this.$router.push({ name: 'appList', query: { pageNumber: this.pageNumber, } });
+            }
+        },
+        getNextPage(event){
+            event.preventDefault();
+            if (this.pageNumber < (this.totalPages -1)){
+                this.pageNumber = this.pageNumber + 1;
+                this.$router.push({ name: 'appList', query: { pageNumber: this.pageNumber, } });
+            }
+        },
     },
-    components: {
+    watch:{
+        '$route' (){
+            this.fetchRecord();
+        }
     },
 }
 </script>

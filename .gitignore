@@ -2,3 +2,9 @@
 /idea*.tar.gz
 /ssoparent.iml
 /.idea/
+.project
+.settings/
+.vscode/
+ssoserver/.vscode/
+ssoclient/.vscode/
+ssoentity/.vscode/

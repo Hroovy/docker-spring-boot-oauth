@@ -13,8 +13,6 @@ services:
       - ./mariadb/conf.d:/etc/mysql/conf.d
       - ./mariadb/script/schema.sql:/docker-entrypoint-initdb.d/schema.sql
     working_dir: /app/
-    #command: ['mysql', '-u', 'root', '-pexample' , '<', 'schema.sql']
-    #command: mysql -u root -pexample < schema.sql
   
   adminer:
     image: adminer
@@ -51,32 +49,19 @@ services:
 #      - 8081:8081
 
   compiler:
-    image: maven-xserver # or maven:3.6.0-jdk-11 if you run without IDE
+    image: wingzzz2003/codeserver:3.9.0 # or maven:3.6.0-jdk-11 if you run without IDE
+    #image: maven:3.6-jdk-11
     volumes:
-      - appdata:/root/:Z
+      - /opt/data/codeserver:/root/
       - ./:/root/external
-      # - mavendata:/root/.m2:Z
     ports:
-      - 8080:8080
-      - 8081:8081
-      - 8082:8082
-    command: bash
+      - "3000:3000"
+      - "8080-8090:8080-8090"
+      - "9000:9000"
+    command: code-server
     stdin_open: true
     tty: true
     working_dir: /root
-
-  nodecompiler:
-    image: node:12.9 # or maven:3.6.0-jdk-11 if you run without IDE
-    volumes:
-      - appdata:/root/:Z
-      - ./:/root/external
-    ports:
-      - 3000:3000
-    command: bash
-    stdin_open: true
-    tty: true
-    working_dir: /root
-
     
 #  tomcat:
 #    image: docker.ias.gov.mo:5001/tomcat9.0
@@ -85,14 +70,6 @@ services:
 #    volumes:
 #      - appdata:/root/:Z
 #      - ./:/root/external
-
-volumes:
-  # mavendata:
-  #   external:
-  #     name: java_mavendata
-  appdata:
-    external:
-      name: java_workspace
 
 #in powershell
 # set-variable -name DISPLAY -value 10.61.110.225:0.0

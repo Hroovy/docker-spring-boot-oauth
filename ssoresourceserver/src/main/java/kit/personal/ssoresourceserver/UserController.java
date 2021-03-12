@@ -1,7 +1,5 @@
 package kit.personal.ssoresourceserver;
 
-import kit.personal.ssoresourceserver.dto.AwApplicant;
-import kit.personal.ssoresourceserver.dto.AwApplicantRepo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,20 +11,18 @@ import java.security.Principal;
 @Controller
 public class UserController {
     private static Logger LOG = LoggerFactory.getLogger(UserController.class);
-    @Autowired
-    AwApplicantRepo repo;
 
 
-    @GetMapping("/user/sep")
+    @GetMapping("/user/read")
     @ResponseBody
     public Principal user(Principal principal) {
         // TODO how to update info if token is a long term token?
         return principal;
     }
 
-    @GetMapping("/user/first")
+    @GetMapping("/user/write")
     @ResponseBody
-    public AwApplicant testDB(Principal principal) {
-        return repo.findFirstBy();
+    public String testDB(Principal principal) {
+        return "it works";
     }
 }

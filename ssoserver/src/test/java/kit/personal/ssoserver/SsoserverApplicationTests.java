@@ -9,9 +9,8 @@ import kit.personal.ssoentity.repo.AppUserActingRepository;
 import kit.personal.ssoentity.repo.AppUserRepository;
 import kit.personal.ssoentity.repo.AppUserRoleRepository;
 import org.json.JSONObject;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
@@ -24,18 +23,12 @@ import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.RequestBuilder;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 
-
 import static org.hamcrest.Matchers.containsString;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-
-
-
-
-
 
 import javax.transaction.Transactional;
 
@@ -44,9 +37,8 @@ import java.util.Date;
 
 import static org.assertj.core.api.Assertions.*;
 
-@RunWith(SpringRunner.class)
 @SpringBootTest
-@TestPropertySource(locations="classpath:test.properties")
+@TestPropertySource(locations = "classpath:test.properties")
 @AutoConfigureMockMvc
 @Transactional
 public class SsoserverApplicationTests {
@@ -69,126 +61,102 @@ public class SsoserverApplicationTests {
 
 	@Autowired
 	private MockMvc mockMvc;
-/*
-	@Test
-	public void testPasswordGrantWithCustomADAuthentication() throws Exception {
-//		curl -X POST \
-//		http://localhost:8081/auth/oauth/token \
-//		-F grant_type=password \
-//		-F username=john \
-//		-F password=456 \
-//		-F client_id=spring-security-oauth2-read-write-client \
-//		-F client_secret=spring-security-oauth2-read-write-client-password1234
-		MvcResult result = this.mockMvc.perform(
-				post("/oauth/token")
-						.param("grant_type", "password")
-						.param("username", "stupiduser")
-						.param("password", "stupidpassword")
-						.param("client_id", "spring-security-oauth2-read-write-client")
-						.param("client_secret", "spring-security-oauth2-read-write-client-password1234")
-		).andDo(print()).andExpect(status().isOk())
-				.andExpect(content().string(containsString("bearer")))
-				.andReturn();
 
-		String jsonStr = result.getResponse().getContentAsString();
-		JSONObject jsonObject = new JSONObject(jsonStr);
-		String accessToken = (String)jsonObject.get("access_token");
-		String tokenType = (String)jsonObject.get("token_type");
-		assertThat(tokenType).isEqualTo("bearer");
-		assertThat(accessToken).isNotEmpty();
-
-		// curl http://localhost:8081/auth/user/me -H "Authorization: Bearer 5a428f4c-3356-41c3-9a57-ca54971d75e0"
-		this.mockMvc.perform(
-				get("/user/me").header("Authorization", "Bearer " + accessToken)
-		).andDo(print()).andExpect(status().isOk());
-	}
-*/
+	/*
+	 * @Test public void testPasswordGrantWithCustomADAuthentication() throws
+	 * Exception { // curl -X POST \ // http://localhost:8081/auth/oauth/token \ //
+	 * -F grant_type=password \ // -F username=john \ // -F password=456 \ // -F
+	 * client_id=spring-security-oauth2-read-write-client \ // -F
+	 * client_secret=spring-security-oauth2-read-write-client-password1234 MvcResult
+	 * result = this.mockMvc.perform( post("/oauth/token") .param("grant_type",
+	 * "password") .param("username", "stupiduser") .param("password",
+	 * "stupidpassword") .param("client_id",
+	 * "spring-security-oauth2-read-write-client") .param("client_secret",
+	 * "spring-security-oauth2-read-write-client-password1234")
+	 * ).andDo(print()).andExpect(status().isOk())
+	 * .andExpect(content().string(containsString("bearer"))) .andReturn();
+	 * 
+	 * String jsonStr = result.getResponse().getContentAsString(); JSONObject
+	 * jsonObject = new JSONObject(jsonStr); String accessToken =
+	 * (String)jsonObject.get("access_token"); String tokenType =
+	 * (String)jsonObject.get("token_type");
+	 * assertThat(tokenType).isEqualTo("bearer");
+	 * assertThat(accessToken).isNotEmpty();
+	 * 
+	 * // curl http://localhost:8081/auth/user/me -H
+	 * "Authorization: Bearer 5a428f4c-3356-41c3-9a57-ca54971d75e0"
+	 * this.mockMvc.perform( get("/user/me").header("Authorization", "Bearer " +
+	 * accessToken) ).andDo(print()).andExpect(status().isOk()); }
+	 */
 	@Test
 	public void testPasswordGrant() throws Exception {
-//		curl -X POST \
-//		http://localhost:8081/auth/oauth/token \
-//		-F grant_type=password \
-//		-F username=john \
-//		-F password=456 \
-//		-F client_id=spring-security-oauth2-read-write-client \
-//		-F client_secret=spring-security-oauth2-read-write-client-password1234
-		MvcResult result = this.mockMvc.perform(
-				post("/oauth/token")
-						.param("grant_type", "password")
-						.param("username", "user1")
-						.param("password", "1resu")
-						.param("client_id", "spring-security-oauth2-read-write-client")
-						.param("client_secret", "spring-security-oauth2-read-write-client-password1234")
-		).andDo(print()).andExpect(status().isOk())
-				.andExpect(content().string(containsString("bearer")))
+		// curl -X POST \
+		// http://localhost:8081/auth/oauth/token \
+		// -F grant_type=password \
+		// -F username=john \
+		// -F password=456 \
+		// -F client_id=spring-security-oauth2-read-write-client \
+		// -F client_secret=spring-security-oauth2-read-write-client-password1234
+		MvcResult result = this.mockMvc
+				.perform(post("/oauth/token").param("grant_type", "password").param("username", "user1")
+						.param("password", "1resu").param("client_id", "spring-security-oauth2-read-write-client")
+						.param("client_secret", "spring-security-oauth2-read-write-client-password1234"))
+				.andDo(print()).andExpect(status().isOk()).andExpect(content().string(containsString("bearer")))
 				.andReturn();
 
 		String jsonStr = result.getResponse().getContentAsString();
 		JSONObject jsonObject = new JSONObject(jsonStr);
-		String accessToken = (String)jsonObject.get("access_token");
-		String tokenType = (String)jsonObject.get("token_type");
+		String accessToken = (String) jsonObject.get("access_token");
+		String tokenType = (String) jsonObject.get("token_type");
 		assertThat(tokenType).isEqualTo("bearer");
 		assertThat(accessToken).isNotEmpty();
 
-		// curl http://localhost:8081/auth/user/me -H "Authorization: Bearer 5a428f4c-3356-41c3-9a57-ca54971d75e0"
-		this.mockMvc.perform(
-			get("/user/me").header("Authorization", "Bearer " + accessToken)
-		).andDo(print()).andExpect(status().isOk());
+		// curl http://localhost:8081/auth/user/me -H "Authorization: Bearer
+		// 5a428f4c-3356-41c3-9a57-ca54971d75e0"
+		this.mockMvc.perform(get("/user/me").header("Authorization", "Bearer " + accessToken)).andDo(print())
+				.andExpect(status().isOk());
 	}
 
 	@Test
 	public void testClientCredentialsGrant() throws Exception {
-//		curl -X POST \
-//		http://localhost:8081/auth/oauth/token \
-//		-F grant_type=client_credentials \
-//		-F client_id=spring-security-oauth2-read-write-client \
-//		-F client_secret=spring-security-oauth2-read-write-client-password1234
-		MvcResult result = this.mockMvc.perform(
-				post("/oauth/token")
-						.param("grant_type", "client_credentials")
+		// curl -X POST \
+		// http://localhost:8081/auth/oauth/token \
+		// -F grant_type=client_credentials \
+		// -F client_id=spring-security-oauth2-read-write-client \
+		// -F client_secret=spring-security-oauth2-read-write-client-password1234
+		MvcResult result = this.mockMvc
+				.perform(post("/oauth/token").param("grant_type", "client_credentials")
 						.param("client_id", "spring-security-oauth2-read-write-client")
-						.param("client_secret", "spring-security-oauth2-read-write-client-password1234")
-		).andDo(print()).andExpect(status().isOk())
-				.andExpect(content().string(containsString("bearer")))
+						.param("client_secret", "spring-security-oauth2-read-write-client-password1234"))
+				.andDo(print()).andExpect(status().isOk()).andExpect(content().string(containsString("bearer")))
 				.andReturn();
 
 		String jsonStr = result.getResponse().getContentAsString();
 		JSONObject jsonObject = new JSONObject(jsonStr);
-		String accessToken = (String)jsonObject.get("access_token");
-		String tokenType = (String)jsonObject.get("token_type");
+		String accessToken = (String) jsonObject.get("access_token");
+		String tokenType = (String) jsonObject.get("token_type");
 		assertThat(tokenType).isEqualTo("bearer");
 		assertThat(accessToken).isNotEmpty();
 
-		// curl http://localhost:8081/auth/app/fullUserList -H "Authorization: Bearer 5a428f4c-3356-41c3-9a57-ca54971d75e0"
-		this.mockMvc.perform(
-				get("/app/fullUserList").header("Authorization", "Bearer " + accessToken)
-		).andDo(print()).andExpect(status().isOk());
+		// curl http://localhost:8081/auth/app/fullUserList -H "Authorization: Bearer
+		// 5a428f4c-3356-41c3-9a57-ca54971d75e0"
+		this.mockMvc.perform(get("/app/fullUserList").header("Authorization", "Bearer " + accessToken)).andDo(print())
+				.andExpect(status().isOk());
 
-		this.mockMvc.perform(
-				get("/app/usersEmail")
-						.header("Authorization", "Bearer " + accessToken)
-						.param("username[]", "user1")
-						.param("username[]", "user2")
-		).andDo(print())
-				.andExpect(status().isOk())
+		this.mockMvc
+				.perform(get("/app/usersEmail").header("Authorization", "Bearer " + accessToken)
+						.param("username[]", "user1").param("username[]", "user2"))
+				.andDo(print()).andExpect(status().isOk())
 				.andExpect(content().string(containsString("user1@sso.localhost")))
-				.andExpect(content().string(containsString("user2@sso.localhost")))
-		;
+				.andExpect(content().string(containsString("user2@sso.localhost")));
 
-		this.mockMvc.perform(
-				post("/app/addUserRole")
-						.header("Authorization", "Bearer " + accessToken)
-						.param("username", "user1")
-						.param("appRole", "shit")
-		).andDo(print())
-				.andExpect(status().isOk())
-				.andExpect(content().string(containsString("true")))
-		;
+		this.mockMvc
+				.perform(post("/app/addUserRole").header("Authorization", "Bearer " + accessToken)
+						.param("username", "user1").param("appRole", "shit"))
+				.andDo(print()).andExpect(status().isOk()).andExpect(content().string(containsString("true")));
 	}
 
-
-
-	@Before
+	@BeforeEach
 	public void setUp() throws Exception {
 		//this.setUpApp();
 		Date now = new Date();

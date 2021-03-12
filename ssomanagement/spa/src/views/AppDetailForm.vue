@@ -11,11 +11,11 @@
         <form>
             <div class="form-group">
                 <label for="clientId">clientId</label>
-                <input type="text" class="form-control" id="clientId" v-model="appDetail.clientId"/>
+                <input type="text" class="form-control" id="clientId" v-model="appDetail.clientId" required/>
             </div>
             <div class="form-group">
                 <label for="displayName">displayName</label>
-                <input type="text" class="form-control" id="displayName" v-model="appDetail.displayName"/>
+                <input type="text" class="form-control" id="displayName" v-model="appDetail.displayName" required/>
             </div>
             <div class="form-group">
                 <label for="resourceIds">resourceIds</label>
@@ -23,44 +23,52 @@
             </div>
             <div class="form-group">
                 <label for="clientSecret">clientSecret</label>
-                <input type="password" class="form-control" id="clientSecret" v-model="appDetail.clientSecret" disabled/>
-                <a href="#regen" v-on:click="(event) => {generatePassword(event, 32);}">generate</a>
+                <input type="password" class="form-control" id="clientSecret" v-model="appDetail.clientSecret" disabled required/>
+                <a v-if="appDetail.clientSecret == null || appDetail.clientSecret == ''" href="#regen" v-on:click="(event) => {generatePassword(event, 32);}">
+                    generate
+                </a>
+                <a v-else href="#regen" v-on:click="(event) => {generatePassword(event, 32);}">
+                    reset
+                </a>
             </div>
             <div class="form-group" v-show="showClientSecret">
                 <div>
-                    generated: {{appDetail.clientSecret}}
+                    new clientSecret will be saved : {{appDetail.clientSecret}}
                 </div>
             </div>
             <div class="form-group">
-                <label for="scope">scope</label>
+                <label for="scope">scope (comma seperate)</label><br/>
+                <small>Supported value: read,full_user_list,user_management</small>
                 <input type="text" class="form-control" id="scope" v-model="appDetail.scope"/>
             </div>
             <div class="form-group">
-                <label for="authorizedGrantTypes">authorizedGrantTypes</label>
+                <label for="authorizedGrantTypes">authorizedGrantTypes (comma seperate)</label><br/>
+                <small>Supported value: password,authorization_code,refresh_token,implicit,client_credentials</small>
                 <input type="text" class="form-control" id="authorizedGrantTypes" v-model="appDetail.authorizedGrantTypes"/>
             </div>
             <div class="form-group">
-                <label for="webServerRedirectUri">webServerRedirectUri</label>
+                <label for="webServerRedirectUri">webServerRedirectUri (comma seperate)</label>
                 <input type="text" class="form-control" id="webServerRedirectUri" v-model="appDetail.webServerRedirectUri"/>
             </div>
             <div class="form-group">
-                <label for="authorities">authorities</label>
+                <label for="authorities">authorities (comma seperate)</label>
                 <input type="text" class="form-control" id="authorities" v-model="appDetail.authorities"/>
             </div>
             <div class="form-group">
                 <label for="accessTokenValidity">accessTokenValidity</label>
-                <input type="number" class="form-control" id="accessTokenValidity" v-model="appDetail.accessTokenValidity"/>
+                <input type="number" class="form-control" id="accessTokenValidity" v-model="appDetail.accessTokenValidity" placeholder="10800"/>
             </div>
             <div class="form-group">
                 <label for="refreshTokenValidity">refreshTokenValidity</label>
-                <input type="number" class="form-control" id="refreshTokenValidity" v-model="appDetail.refreshTokenValidity"/>
+                <input type="number" class="form-control" id="refreshTokenValidity" v-model="appDetail.refreshTokenValidity"  placeholder="2592000"/>
             </div>
             <div class="form-group">
                 <label for="additionalInformation">additionalInformation</label>
                 <input type="text" class="form-control" id="additionalInformation" v-model="appDetail.additionalInformation"/>
             </div>
             <div class="form-group">
-                <label for="autoapprove">autoapprove</label>
+                <label for="autoapprove">autoapprove</label><br/>
+                <small>Supported value: read,full_user_list,user_management</small>
                 <input type="text" class="form-control" id="autoapprove" v-model="appDetail.autoapprove"/>
             </div>
             <a class="btn btn-primary" role="button" href="#save" v-on:click="save">Save</a>
@@ -94,10 +102,11 @@
                     authorizedGrantTypes: null,
                     webServerRedirectUri: null,
                     authorities: null,
-                    accessTokenValidity: null,
-                    refreshTokenValidity: null,
+                    accessTokenValidity: 10800,
+                    refreshTokenValidity: 2592000,
                     additionalInformation: null,
                     autoapprove: null,
+                    updateClientSecret: false,
                 },
                 showClientSecret:false,
             };
@@ -116,6 +125,27 @@
             },
             checkForm : function(){
                 this.errors = [];
+                if (this.appDetail.clientId == null || this.appDetail.clientId == ""){
+                    this.errors.push("clientId cannot be empty");
+                }
+                if (this.appDetail.resourceIds == null || this.appDetail.resourceIds == ""){
+                    this.errors.push("resourceIds cannot be empty");
+                }
+                if (this.appDetail.clientSecret == null || this.appDetail.clientSecret == ""){
+                    this.errors.push("clientSecret cannot be empty");
+                }
+                if (this.appDetail.scope == null || this.appDetail.scope == ""){
+                    this.errors.push("scope cannot be empty");
+                }
+                if (this.appDetail.authorizedGrantTypes == null || this.appDetail.authorizedGrantTypes == ""){
+                    this.errors.push("authorizedGrantTypes cannot be empty");
+                }
+                if (this.appDetail.accessTokenValidity == null || this.appDetail.accessTokenValidity == ""){
+                    this.errors.push("accessTokenValidity cannot be empty");
+                }
+                if (this.appDetail.refreshTokenValidity == null || this.appDetail.refreshTokenValidity == ""){
+                    this.errors.push("refreshTokenValidity cannot be empty");
+                }
             },
             generatePassword(event, length){
                 event.preventDefault();
@@ -126,6 +156,7 @@
                   result += characters.charAt(Math.floor(Math.random() * charactersLength));
                 }
                 this.appDetail.clientSecret = result;
+                this.appDetail.updateClientSecret = true;
                 this.showClientSecret = true;
             },
             fetchRecord: function(){
@@ -147,6 +178,7 @@
                 let self = this;
                 self.checkForm();
                 if (self.errors.length > 0){
+                    alert(this.errors.join("\n"));
                     return;
                 }
                 let axiosConfig = self.$store.state.axiosConfig;
