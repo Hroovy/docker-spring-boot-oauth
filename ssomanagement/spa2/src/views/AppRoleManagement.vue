@@ -50,6 +50,13 @@
             >
             </el-table-column>
             <el-table-column
+                prop="email"
+                label="Email"
+                width="200"
+                sortable
+            >
+            </el-table-column>
+            <el-table-column
                 prop="appRole"
                 label="App Role"
                 width="200"
@@ -123,6 +130,7 @@
                     if (this.searchWords != ""){
                         return (appUserRole.displayName !=null && appUserRole.displayName.includes(this.searchWords)) || 
                             (appUserRole.username !=null && appUserRole.username.includes(this.searchWords)) ||
+                            (appUserRole.email !=null && appUserRole.email.includes(this.searchWords)) ||
                             (appUserRole.appRole !=null && appUserRole.appRole.includes(this.searchWords));
                     } else {
                         return true;
@@ -137,8 +145,10 @@
                         this.appUserRoleList.forEach((appUserRole)=>{
                             if (this.usernameMap[appUserRole.username] != null){
                                 appUserRole.displayName = this.usernameMap[appUserRole.username].displayName;
+                                appUserRole.email = this.usernameMap[appUserRole.username].email;
                             } else {
                                 appUserRole.displayName = "ERROR";
+                                appUserRole.email = "ERROR";
                             }
                         });
                         this.appUserRoleFilteredList = this.appUserRoleList;
