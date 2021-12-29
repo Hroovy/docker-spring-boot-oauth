@@ -46,10 +46,4 @@ public class ErrorHandlerController implements ErrorController {
         }
         return "unkonw error"; // use white label error
     }
-
-    @Override
-    public String getErrorPath() {
-        // TODO Auto-generated method stub
-        return null;
-    }
 }

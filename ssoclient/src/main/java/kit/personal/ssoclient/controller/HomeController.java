@@ -55,7 +55,7 @@ public class HomeController{
     @GetMapping("/logoutPage")
     public void revokeToken(OAuth2AuthenticationToken authentication, HttpServletRequest logoutRequest, HttpServletResponse response) {
         OAuth2AuthorizedClient authorizedClient = this.getAuthorizedClient(authentication);
-        String ret = "token:" + authorizedClient.getAccessToken().getTokenValue();
+        // String ret = "token:" + authorizedClient.getAccessToken().getTokenValue();
         HttpClient client = HttpClient.newBuilder()
             .followRedirects(Redirect.NORMAL)
             .connectTimeout(Duration.ofSeconds(20))

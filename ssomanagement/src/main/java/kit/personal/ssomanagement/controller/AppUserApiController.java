@@ -16,12 +16,12 @@ import org.springframework.web.bind.annotation.*;
 import java.math.BigInteger;
 import java.security.Principal;
 import java.util.Date;
-import java.util.List;
 import java.util.Optional;
 
 @RestController
 @RequestMapping(value = "/api")
 public class AppUserApiController {
+	@SuppressWarnings("unused")
 	private static Logger LOG = LoggerFactory.getLogger(AppUserApiController.class);
 
 	@Autowired
