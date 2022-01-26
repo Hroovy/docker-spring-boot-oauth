@@ -23,7 +23,9 @@ public class CheckTokenResponse {
         map.put("user_name", user_name);
         map.put("scope", scope);
         map.put("active", active);
-        map.put("exp", Instant.ofEpochSecond(exp));
+        if (exp != null){
+            map.put("exp", Instant.ofEpochSecond(exp));
+        }
         map.put("authorities", authorities);
         map.put("client_id", client_id);
         return map;

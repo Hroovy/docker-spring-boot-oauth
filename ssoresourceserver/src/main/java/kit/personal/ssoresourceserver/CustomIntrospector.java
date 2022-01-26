@@ -35,8 +35,10 @@ public class CustomIntrospector implements OpaqueTokenIntrospector {
     public OAuth2AuthenticatedPrincipal introspect(String token) {
         Set<GrantedAuthority> mappedAuthorities = new HashSet<GrantedAuthority>();
         CheckTokenResponse attributes = this.checkToken(token);
-        // Set<String> scopeSet = (Set<String>) attributes.getMap().get("scope");
         Set<String> scopeSet = this.castToString(attributes.getMap().get("scope"));
+        if (scopeSet == null){
+            throw new IntrospectException("unable to verify token");
+        }
         for (String scope: scopeSet){
             mappedAuthorities.add(new SimpleGrantedAuthority("SCOPE_" + scope));
         }
@@ -44,6 +46,9 @@ public class CustomIntrospector implements OpaqueTokenIntrospector {
     }
 
     private Set<String> castToString(Object objCollection){
+        if (objCollection == null){
+            return null;
+        }
         Set<String> ret = new HashSet<>();
         if (objCollection instanceof Collection<?>){
             Collection<?> rowCollection = (Collection<?>) objCollection;
