@@ -8,6 +8,7 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.nio.charset.StandardCharsets;
 import java.time.Duration;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -34,11 +35,29 @@ public class CustomIntrospector implements OpaqueTokenIntrospector {
     public OAuth2AuthenticatedPrincipal introspect(String token) {
         Set<GrantedAuthority> mappedAuthorities = new HashSet<GrantedAuthority>();
         CheckTokenResponse attributes = this.checkToken(token);
-        Set<String> scopeSet = (Set<String>) attributes.getMap().get("scope");
+        // Set<String> scopeSet = (Set<String>) attributes.getMap().get("scope");
+        Set<String> scopeSet = this.castToString(attributes.getMap().get("scope"));
         for (String scope: scopeSet){
             mappedAuthorities.add(new SimpleGrantedAuthority("SCOPE_" + scope));
         }
         return new DefaultOAuth2User(mappedAuthorities, attributes.getMap(), "user_name");
+    }
+
+    private Set<String> castToString(Object objCollection){
+        Set<String> ret = new HashSet<>();
+        if (objCollection instanceof Collection<?>){
+            Collection<?> rowCollection = (Collection<?>) objCollection;
+            for(Object obj : rowCollection){
+                if (obj instanceof String){
+                    ret.add(String.class.cast(obj));
+                } else {
+                    LOG.error("wrong type. expect type String, but was " + obj.getClass().getCanonicalName());
+                }
+            }
+        } else {
+            LOG.error("wrong type. expect type Collection<String>, but was " + objCollection.getClass().getCanonicalName());
+        }
+        return ret;
     }
     
     private CheckTokenResponse checkToken(String token){

@@ -5,7 +5,6 @@
 
 	<groupId>kit.personal</groupId>
 	<artifactId>ssomanagement</artifactId>
-	<version>0.4.5</version>
 	<packaging>war</packaging>
 
 	<name>ssomanagement</name>

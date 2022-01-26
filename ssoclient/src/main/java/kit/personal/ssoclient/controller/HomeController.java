@@ -114,8 +114,8 @@ public class HomeController{
 
     @GetMapping("/usercustom")
     @ResponseBody
-    public String userias(OAuth2AuthenticationToken authentication) {
-        String ret = "you have role ias";
+    public String userCustom(OAuth2AuthenticationToken authentication) {
+        String ret = "you have role Custom";
         return ret;
     }
 

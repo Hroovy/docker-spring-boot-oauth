@@ -1,5 +1,7 @@
 package kit.personal.ssoresourceserver;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -9,6 +11,8 @@ import org.springframework.security.oauth2.server.resource.introspection.OpaqueT
 
 @EnableWebSecurity
 public class ResourceServerConfiguration extends WebSecurityConfigurerAdapter {
+    private static Logger LOG = LoggerFactory.getLogger(ResourceServerConfiguration.class);
+
     @Value("${oauth.check_token.uri}")
     private String checkTokenUri;
     protected void configure(HttpSecurity http) {
@@ -20,11 +24,11 @@ public class ResourceServerConfiguration extends WebSecurityConfigurerAdapter {
                         .anyRequest().authenticated())
                 .oauth2ResourceServer(
                     oauth2 -> oauth2
-                        .opaqueToken(opaqueToken -> opaqueToken.introspector(introspector())                        
+                        .opaqueToken(opaqueToken -> opaqueToken.introspector(introspector())
                     ));
         } catch (Exception e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+            LOG.error(e.getMessage());
+            throw new RuntimeException(e);
         }
     }
     @Bean

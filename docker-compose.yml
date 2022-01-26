@@ -62,15 +62,3 @@ services:
     stdin_open: true
     tty: true
     working_dir: /root
-    
-#  tomcat:
-#    image: docker.ias.gov.mo:5001/tomcat9.0
-#    ports:
-#      - "8888:8080"
-#    volumes:
-#      - appdata:/root/:Z
-#      - ./:/root/external
-
-#in powershell
-# set-variable -name DISPLAY -value 10.61.110.225:0.0
-#docker exec -it -e DISPLAY=$DISPLAY docker-spring-boot-oauth_compiler_1 bash
