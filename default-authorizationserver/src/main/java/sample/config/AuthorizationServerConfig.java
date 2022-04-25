@@ -17,17 +17,22 @@ package sample.config;
 
 import java.util.UUID;
 
+import javax.sql.DataSource;
+
 import com.nimbusds.jose.jwk.JWKSet;
 import com.nimbusds.jose.jwk.RSAKey;
 import com.nimbusds.jose.jwk.source.JWKSource;
 import com.nimbusds.jose.proc.SecurityContext;
 import sample.jose.Jwks;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Import;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabase;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseBuilder;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseType;
@@ -52,8 +57,17 @@ import org.springframework.security.web.SecurityFilterChain;
  * @author Joe Grandja
  * @since 0.0.1
  */
-@Configuration(proxyBeanMethods = false)
+// @Configuration(proxyBeanMethods = false)
+@Configuration
 public class AuthorizationServerConfig {
+	// @Value("${jdbc.driverClassName}")
+	// private String jdbcDriverClassName;
+	// @Value("${jdbc.url}")
+	// private String jdbcUrl;
+	// @Value("${jdbc.user}")
+	// private String jdbcUser;
+	// @Value("${jdbc.password}")
+	// private String jdbcPassword;
 
 	@Bean
 	@Order(Ordered.HIGHEST_PRECEDENCE)
@@ -65,36 +79,38 @@ public class AuthorizationServerConfig {
 	// @formatter:off
 	@Bean
 	public RegisteredClientRepository registeredClientRepository(JdbcTemplate jdbcTemplate) {
-		RegisteredClient registeredClient = RegisteredClient.withId(UUID.randomUUID().toString())
-				.clientId("messaging-client")
-				.clientSecret("{noop}secret")
-				.clientAuthenticationMethod(ClientAuthenticationMethod.CLIENT_SECRET_BASIC)
-				.authorizationGrantType(AuthorizationGrantType.AUTHORIZATION_CODE)
-				.authorizationGrantType(AuthorizationGrantType.REFRESH_TOKEN)
-				.authorizationGrantType(AuthorizationGrantType.CLIENT_CREDENTIALS)
-				.redirectUri("http://127.0.0.1:8080/login/oauth2/code/messaging-client-oidc")
-				.redirectUri("http://127.0.0.1:8080/authorized")
-				.scope(OidcScopes.OPENID)
-				.scope("message.read")
-				.scope("message.write")
-				.clientSettings(ClientSettings.builder().requireAuthorizationConsent(true).build())
-				.build();
+		// RegisteredClient registeredClient = RegisteredClient.withId(UUID.randomUUID().toString())
+		// 		.clientId("messaging-client")
+		// 		.clientSecret("{noop}secret")
+		// 		.clientAuthenticationMethod(ClientAuthenticationMethod.CLIENT_SECRET_BASIC)
+		// 		.authorizationGrantType(AuthorizationGrantType.AUTHORIZATION_CODE)
+		// 		.authorizationGrantType(AuthorizationGrantType.REFRESH_TOKEN)
+		// 		.authorizationGrantType(AuthorizationGrantType.CLIENT_CREDENTIALS)
+		// 		.redirectUri("http://127.0.0.1:8080/login/oauth2/code/messaging-client-oidc")
+		// 		.redirectUri("http://127.0.0.1:8080/authorized")
+		// 		.scope(OidcScopes.OPENID)
+		// 		.scope("message.read")
+		// 		.scope("message.write")
+		// 		.clientSettings(ClientSettings.builder().requireAuthorizationConsent(true).build())
+		// 		.build();
 
 		// Save registered client in db as if in-memory
 		JdbcRegisteredClientRepository registeredClientRepository = new JdbcRegisteredClientRepository(jdbcTemplate);
-		registeredClientRepository.save(registeredClient);
+		// registeredClientRepository.save(registeredClient);
 
 		return registeredClientRepository;
 	}
 	// @formatter:on
 
 	@Bean
-	public OAuth2AuthorizationService authorizationService(JdbcTemplate jdbcTemplate, RegisteredClientRepository registeredClientRepository) {
+	public OAuth2AuthorizationService authorizationService(JdbcTemplate jdbcTemplate,
+			RegisteredClientRepository registeredClientRepository) {
 		return new JdbcOAuth2AuthorizationService(jdbcTemplate, registeredClientRepository);
 	}
 
 	@Bean
-	public OAuth2AuthorizationConsentService authorizationConsentService(JdbcTemplate jdbcTemplate, RegisteredClientRepository registeredClientRepository) {
+	public OAuth2AuthorizationConsentService authorizationConsentService(JdbcTemplate jdbcTemplate,
+			RegisteredClientRepository registeredClientRepository) {
 		return new JdbcOAuth2AuthorizationConsentService(jdbcTemplate, registeredClientRepository);
 	}
 
@@ -110,18 +126,29 @@ public class AuthorizationServerConfig {
 		return ProviderSettings.builder().issuer("http://localhost:9000").build();
 	}
 
-	@Bean
-	public EmbeddedDatabase embeddedDatabase() {
-		// @formatter:off
-		return new EmbeddedDatabaseBuilder()
-				.generateUniqueName(true)
-				.setType(EmbeddedDatabaseType.H2)
-				.setScriptEncoding("UTF-8")
-				.addScript("org/springframework/security/oauth2/server/authorization/oauth2-authorization-schema.sql")
-				.addScript("org/springframework/security/oauth2/server/authorization/oauth2-authorization-consent-schema.sql")
-				.addScript("org/springframework/security/oauth2/server/authorization/client/oauth2-registered-client-schema.sql")
-				.build();
-		// @formatter:on
-	}
+	// @Bean
+	// public EmbeddedDatabase embeddedDatabase() {
+	// 	// @formatter:off
+	// 	return new EmbeddedDatabaseBuilder()
+	// 			.generateUniqueName(true)
+	// 			.setType(EmbeddedDatabaseType.H2)
+	// 			.setScriptEncoding("UTF-8")
+	// 			.addScript("org/springframework/security/oauth2/server/authorization/oauth2-authorization-schema.sql")
+	// 			.addScript("org/springframework/security/oauth2/server/authorization/oauth2-authorization-consent-schema.sql")
+	// 			.addScript("org/springframework/security/oauth2/server/authorization/client/oauth2-registered-client-schema.sql")
+	// 			.build();
+	// 	// @formatter:on
+	// }
+
+	// @Bean
+	// public DataSource datasource() {
+	// 	DriverManagerDataSource dataSource = new DriverManagerDataSource();
+
+	// 	dataSource.setDriverClassName(jdbcDriverClassName);
+	// 	dataSource.setUrl(jdbcUrl);
+	// 	dataSource.setUsername(jdbcUser);
+	// 	dataSource.setPassword(jdbcPassword);
+	// 	return dataSource;
+	// }
 
 }

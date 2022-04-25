@@ -36,6 +36,7 @@ public class DefaultSecurityConfig {
 	// @formatter:off
 	@Bean
 	SecurityFilterChain defaultSecurityFilterChain(HttpSecurity http) throws Exception {
+		http.authorizeRequests().mvcMatchers("/oauth/authorize").permitAll();
 		http
 			.authorizeRequests(authorizeRequests ->
 				authorizeRequests.anyRequest().authenticated()
