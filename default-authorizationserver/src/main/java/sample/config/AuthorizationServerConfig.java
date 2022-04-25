@@ -57,8 +57,8 @@ import org.springframework.security.web.SecurityFilterChain;
  * @author Joe Grandja
  * @since 0.0.1
  */
-// @Configuration(proxyBeanMethods = false)
-@Configuration
+@Configuration(proxyBeanMethods = false)
+// @Configuration
 public class AuthorizationServerConfig {
 	// @Value("${jdbc.driverClassName}")
 	// private String jdbcDriverClassName;
