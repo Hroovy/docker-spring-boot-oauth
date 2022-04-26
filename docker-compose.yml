@@ -3,22 +3,29 @@ version: '3'
 services:
 
   db:
-    image: mariadb
+    image: postgres
     restart: always
     environment:
-      MYSQL_ROOT_PASSWORD: example
-    ports:
-      - 127.0.0.1:3306:3306
+      POSTGRES_PASSWORD: example # postgres/example
     volumes:
-      - ./mariadb/conf.d:/etc/mysql/conf.d
-      - ./mariadb/script/schema.sql:/docker-entrypoint-initdb.d/schema.sql
-    working_dir: /app/
+      - ${PWD}/postgresql/script:/docker-entrypoint-initdb.d
   
   adminer:
     image: adminer
     restart: always
     ports:
       - 127.0.0.1:8120:8080
+
+  compiler:
+    image: wingzzz2003/codeserver_ubuntu:4.3.0
+    restart: always
+    volumes:
+      - ${PWD}:/root/external
+    environment:
+      - TZ=Asia/Macau
+    entrypoint: bash
+    stdin_open: true
+    tty: true
 
 #  node1:
 #    image: maven-xserver # or maven:3.6.0-jdk-11 if you run without IDE
@@ -47,18 +54,3 @@ services:
 #      - ./site.conf:/etc/nginx/conf.d/default.conf
 #    ports:
 #      - 8081:8081
-
-  compiler:
-    image: wingzzz2003/codeserver:3.9.0 # or maven:3.6.0-jdk-11 if you run without IDE
-    #image: maven:3.6-jdk-11
-    volumes:
-      - /opt/data/codeserver:/root/
-      - ./:/root/external
-    ports:
-      - "3000:3000"
-      - "8080-8090:8080-8090"
-      - "9000:9000"
-    command: code-server
-    stdin_open: true
-    tty: true
-    working_dir: /root
