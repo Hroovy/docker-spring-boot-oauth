@@ -4,3 +4,4 @@
 /.vscode/
 src/main/filters-*.properties
 !src/main/filters-example.properties
+/logs/
