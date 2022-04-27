@@ -58,16 +58,7 @@ import org.springframework.security.web.SecurityFilterChain;
  * @since 0.0.1
  */
 @Configuration(proxyBeanMethods = false)
-// @Configuration
 public class AuthorizationServerConfig {
-	// @Value("${jdbc.driverClassName}")
-	// private String jdbcDriverClassName;
-	// @Value("${jdbc.url}")
-	// private String jdbcUrl;
-	// @Value("${jdbc.user}")
-	// private String jdbcUser;
-	// @Value("${jdbc.password}")
-	// private String jdbcPassword;
 
 	@Bean
 	@Order(Ordered.HIGHEST_PRECEDENCE)
@@ -125,30 +116,5 @@ public class AuthorizationServerConfig {
 	public ProviderSettings providerSettings() {
 		return ProviderSettings.builder().issuer("http://localhost:9000").build();
 	}
-
-	// @Bean
-	// public EmbeddedDatabase embeddedDatabase() {
-	// 	// @formatter:off
-	// 	return new EmbeddedDatabaseBuilder()
-	// 			.generateUniqueName(true)
-	// 			.setType(EmbeddedDatabaseType.H2)
-	// 			.setScriptEncoding("UTF-8")
-	// 			.addScript("org/springframework/security/oauth2/server/authorization/oauth2-authorization-schema.sql")
-	// 			.addScript("org/springframework/security/oauth2/server/authorization/oauth2-authorization-consent-schema.sql")
-	// 			.addScript("org/springframework/security/oauth2/server/authorization/client/oauth2-registered-client-schema.sql")
-	// 			.build();
-	// 	// @formatter:on
-	// }
-
-	// @Bean
-	// public DataSource datasource() {
-	// 	DriverManagerDataSource dataSource = new DriverManagerDataSource();
-
-	// 	dataSource.setDriverClassName(jdbcDriverClassName);
-	// 	dataSource.setUrl(jdbcUrl);
-	// 	dataSource.setUsername(jdbcUser);
-	// 	dataSource.setPassword(jdbcPassword);
-	// 	return dataSource;
-	// }
 
 }

@@ -34,7 +34,13 @@ curl -X POST \
 use access token to get value
 ```bash
 curl http://localhost:8081/auth/user/me -H "Authorization: Bearer 5a428f4c-3356-41c3-9a57-ca54971d75e0"
+
+curl -v -X GET \
+	http://localhost:8090/messages \
+	-H "Authorization: Bearer xxxxxxxverylongtoken"
 ```
+
+
 
 revoke
 ```bash
