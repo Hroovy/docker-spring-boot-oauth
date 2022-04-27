@@ -80,6 +80,9 @@ public class WebClientConfig {
 						.authorizationCode()
 						.refreshToken()
 						.clientCredentials()
+						// .clientCredentials(builder ->
+						// 	builder.accessTokenResponseClient(
+						// 		new LoggingClientCredentialsTokenResponseClient()))
 						.build();
 		DefaultOAuth2AuthorizedClientManager authorizedClientManager = new DefaultOAuth2AuthorizedClientManager(
 				clientRegistrationRepository, authorizedClientRepository);

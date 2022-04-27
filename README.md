@@ -53,11 +53,26 @@ curl -X POST \
 
 ### test client_credentials authentication
 ```bash
+# for old spring-security-oauth2
 curl -X POST \
 	http://localhost:8081/auth/oauth/token \
 	-F grant_type=client_credentials \
 	-F client_id=spring-security-oauth2-read-write-client \
 	-F client_secret=spring-security-oauth2-read-write-client-password1234
+
+# for spring-security-oauth2-authorization-server, it's client_authentication_methods is "client_secret_basic"
+# it means that you need to base64 encode "client_id:client_secret" and put in header "Authorization: Basic base64(client_id:client_secret)"
+# scope is optional
+curl -v -X POST \
+	http://localhost:9000/oauth2/token \
+	-F scope="message.read message.write" \
+	-F grant_type=client_credentials \
+	-H "Authorization: Basic bWVzc2FnaW5nLWNsaWVudDpzZWNyZXQ="
+
+curl -v -X POST \
+	http://localhost:9000/oauth2/token \
+	-F grant_type=client_credentials \
+	-H "Authorization: Basic bWVzc2FnaW5nLWNsaWVudDpzZWNyZXQ="
 ```
 
 use access token to get value
