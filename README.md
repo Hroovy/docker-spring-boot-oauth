@@ -76,6 +76,12 @@ curl -v -X POST \
 	-H "Authorization: Basic bWVzc2FnaW5nLWNsaWVudDpzZWNyZXQ="
 
 curl -v -X POST \
+	http://localhost:8081/auth/oauth2/token \
+	-F scope="message.read message.write" \
+	-F grant_type=client_credentials \
+	-H "Authorization: Basic bWVzc2FnaW5nLWNsaWVudDI6c2VjcmV0"
+	
+curl -v -X POST \
 	http://localhost:9000/oauth2/token \
 	-F grant_type=client_credentials \
 	-H "Authorization: Basic bWVzc2FnaW5nLWNsaWVudDpzZWNyZXQ="

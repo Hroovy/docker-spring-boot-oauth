@@ -1,14 +1,14 @@
-package kit.personal.ssoclient.security;
+package kit.personal.ssoclient.config;
 
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Bean;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.oauth2.client.oidc.userinfo.OidcUserRequest;
@@ -21,29 +21,44 @@ import org.springframework.security.oauth2.core.oidc.user.DefaultOidcUser;
 import org.springframework.security.oauth2.core.oidc.user.OidcUser;
 import org.springframework.security.oauth2.core.user.DefaultOAuth2User;
 import org.springframework.security.oauth2.core.user.OAuth2User;
+import org.springframework.security.web.SecurityFilterChain;
+import static org.springframework.security.config.Customizer.withDefaults;
 
-@Configuration
 @EnableWebSecurity
-public class SecurityConfig extends WebSecurityConfigurerAdapter {
-    @Override
-    public void configure(HttpSecurity http) throws Exception {
-        http.authorizeRequests()
+public class SecurityConfig {
+
+    @Bean
+	WebSecurityCustomizer webSecurityCustomizer() {
+		return (web) -> web.ignoring().antMatchers("/webjars/**");
+	}
+
+    // @formatter:off
+    @Bean
+	SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+		http
+			.authorizeRequests(authorizeRequests ->{
+                authorizeRequests
                     .antMatchers("/usercustom").hasRole("CUSTOM")
                     .antMatchers("/usergoogle").hasRole("GOOGLE")
-                    .antMatchers("/loginPage").permitAll()
-                    .anyRequest().authenticated()
-                .and()
-                .oauth2Login()
-                    .loginPage("/loginPage")
-                    .userInfoEndpoint()
-                    .userService(this.userService())
-                    .oidcUserService(this.oidcUserService())
-        ;
-        http.logout().logoutUrl("/logoutPage").logoutSuccessUrl("/")
-                .invalidateHttpSession(true)
-                .deleteCookies("JSESSIONID")
-        ;
-    }
+                    .antMatchers("/loginPage").permitAll();
+                authorizeRequests.anyRequest().authenticated();
+            })
+			.oauth2Login(oauth2Login ->{
+                // oauth2Login.loginPage("/loginPage")
+                //     .userInfoEndpoint()
+                //     .userService(this.userService());
+                oauth2Login.loginPage("/oauth2/authorization/messaging-client-oidc");
+            })
+			.oauth2Client(withDefaults());
+
+        http.logout()
+            .logoutUrl("/logoutPage")
+            .logoutSuccessUrl("/")
+            .invalidateHttpSession(true)
+            .deleteCookies("JSESSIONID");
+		return http.build();
+	}
+    // @formatter:on
 
     private OAuth2UserService<OAuth2UserRequest, OAuth2User> userService() {
         final DefaultOAuth2UserService delegate = new DefaultOAuth2UserService();
@@ -51,21 +66,23 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         return (userRequest) -> {
             // Delegate to the default implementation for loading a user
             OAuth2User oAuth2User = delegate.loadUser(userRequest);
-
-            // OAuth2AccessToken accessToken = userRequest.getAccessToken();
-            Set<GrantedAuthority> mappedAuthorities = new HashSet<>();
-            Map<String, Object> stringObjectMap = oAuth2User.getAttributes();
-            List<Object> objList = (List<Object>)stringObjectMap.get("authorities");
-            for(Object obj: objList){
-                Map<String, String> innerMap = (Map<String, String>) obj;
-                if (innerMap.get("authority").contains("user")){
-                    mappedAuthorities.add(new SimpleGrantedAuthority("ROLE_CUSTOM"));
-                }
-                mappedAuthorities.add(new SimpleGrantedAuthority(innerMap.get("authority")));
-            }
-            oAuth2User = new DefaultOAuth2User(mappedAuthorities, oAuth2User.getAttributes(), "name");
-
             return oAuth2User;
+            // TODO call resource server to get full role
+            // OAuth2AccessToken accessToken = userRequest.getAccessToken();
+            
+            // Set<GrantedAuthority> mappedAuthorities = new HashSet<>();
+            // Map<String, Object> stringObjectMap = oAuth2User.getAttributes();
+            // List<Object> objList = (List<Object>)stringObjectMap.get("authorities");
+            // for(Object obj: objList){
+            //     Map<String, String> innerMap = (Map<String, String>) obj;
+            //     if (innerMap.get("authority").contains("user")){
+            //         mappedAuthorities.add(new SimpleGrantedAuthority("ROLE_CUSTOM"));
+            //     }
+            //     mappedAuthorities.add(new SimpleGrantedAuthority(innerMap.get("authority")));
+            // }
+            // oAuth2User = new DefaultOAuth2User(mappedAuthorities, oAuth2User.getAttributes(), "name");
+
+            // return oAuth2User;
         };
     }
 

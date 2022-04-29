@@ -24,7 +24,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.oauth2.client.OAuth2AuthorizedClient;
-import org.springframework.security.oauth2.client.OAuth2AuthorizedClientService;
+// import org.springframework.security.oauth2.client.OAuth2AuthorizedClientService;
 import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -32,11 +32,11 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller
 public class HomeController{
-    @Value("${spring.security.oauth2.client.provider.springssoserver.baseurl}")
+    @Value("${spring.security.oauth2.client.provider.spring.issuer-uri}")
     private String ssoserverBaseURL;
 
-    @Autowired
-    private OAuth2AuthorizedClientService authorizedClientService;
+    // @Autowired
+    // private OAuth2AuthorizedClientService authorizedClientService;
     private static Logger LOG = LoggerFactory.getLogger(HomeController.class);
 
 
@@ -127,7 +127,9 @@ public class HomeController{
     }
 
     private OAuth2AuthorizedClient getAuthorizedClient(OAuth2AuthenticationToken authentication) {
-        return this.authorizedClientService.loadAuthorizedClient(
-                authentication.getAuthorizedClientRegistrationId(), authentication.getName());
+        // TODO return with web client
+        return null;
+        // return this.authorizedClientService.loadAuthorizedClient(
+        //         authentication.getAuthorizedClientRegistrationId(), authentication.getName());
     }
 }

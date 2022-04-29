@@ -5,7 +5,6 @@ import java.io.Serializable;
 import java.math.BigInteger;
 import java.util.Date;
 import com.fasterxml.jackson.annotation.JsonView;
-//import org.springframework.format.annotation.DateTimeFormat;
 
 @Entity
 public class AppUser implements Serializable {
@@ -20,7 +19,6 @@ public class AppUser implements Serializable {
     @JsonView(EntityJsonView.PUBLIC_VIEW.class)
     private String email;
     private String isActive;
-    //@DateTimeFormat(pattern = "dd/MM/yyyy HH:mm:ss")
     private Date lastModifiedDate;
     private String lastModifiedBy;
 

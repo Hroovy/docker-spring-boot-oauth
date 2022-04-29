@@ -58,4 +58,26 @@ psql -v ON_ERROR_STOP=1 --username "$POSTGRES_USER" --dbname "$POSTGRES_DB" <<-E
     INSERT INTO "oauth2_registered_client" ("id", "client_id", "client_id_issued_at", "client_secret", "client_secret_expires_at", "client_name", "client_authentication_methods", "authorization_grant_types", "redirect_uris", "scopes", "client_settings", "token_settings") VALUES
     ('c1806ab9-d4eb-48ca-9956-4c74ab0d3b7f',	'messaging-client',	'2022-04-25 16:44:07.234125',	'{noop}secret',	NULL,	'c1806ab9-d4eb-48ca-9956-4c74ab0d3b7f',	'client_secret_basic',	'refresh_token,client_credentials,authorization_code',	'http://127.0.0.1:8080/authorized,http://127.0.0.1:8080/login/oauth2/code/messaging-client-oidc',	'openid,message.read,message.write',	'{"@class":"java.util.Collections$UnmodifiableMap","settings.client.require-proof-key":false,"settings.client.require-authorization-consent":true}',	'{"@class":"java.util.Collections$UnmodifiableMap","settings.token.reuse-refresh-tokens":true,"settings.token.id-token-signature-algorithm":["org.springframework.security.oauth2.jose.jws.SignatureAlgorithm","RS256"],"settings.token.access-token-time-to-live":["java.time.Duration",300.000000000],"settings.token.access-token-format":{"@class":"org.springframework.security.oauth2.core.OAuth2TokenFormat","value":"self-contained"},"settings.token.refresh-token-time-to-live":["java.time.Duration",3600.000000000]}');
 
+    CREATE TABLE SPRING_SESSION (
+        PRIMARY_ID CHAR(36) NOT NULL,
+        SESSION_ID CHAR(36) NOT NULL,
+        CREATION_TIME BIGINT NOT NULL,
+        LAST_ACCESS_TIME BIGINT NOT NULL,
+        MAX_INACTIVE_INTERVAL INT NOT NULL,
+        EXPIRY_TIME BIGINT NOT NULL,
+        PRINCIPAL_NAME VARCHAR(100),
+        CONSTRAINT SPRING_SESSION_PK PRIMARY KEY (PRIMARY_ID)
+    );
+
+    CREATE UNIQUE INDEX SPRING_SESSION_IX1 ON SPRING_SESSION (SESSION_ID);
+    CREATE INDEX SPRING_SESSION_IX2 ON SPRING_SESSION (EXPIRY_TIME);
+    CREATE INDEX SPRING_SESSION_IX3 ON SPRING_SESSION (PRINCIPAL_NAME);
+
+    CREATE TABLE SPRING_SESSION_ATTRIBUTES (
+        SESSION_PRIMARY_ID CHAR(36) NOT NULL,
+        ATTRIBUTE_NAME VARCHAR(200) NOT NULL,
+        ATTRIBUTE_BYTES BYTEA NOT NULL,
+        CONSTRAINT SPRING_SESSION_ATTRIBUTES_PK PRIMARY KEY (SESSION_PRIMARY_ID, ATTRIBUTE_NAME),
+        CONSTRAINT SPRING_SESSION_ATTRIBUTES_FK FOREIGN KEY (SESSION_PRIMARY_ID) REFERENCES SPRING_SESSION(PRIMARY_ID) ON DELETE CASCADE
+    );
 EOSQL
