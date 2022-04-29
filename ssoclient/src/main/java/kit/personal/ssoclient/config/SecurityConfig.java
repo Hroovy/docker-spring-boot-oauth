@@ -27,10 +27,10 @@ import static org.springframework.security.config.Customizer.withDefaults;
 @EnableWebSecurity
 public class SecurityConfig {
 
-    @Bean
-	WebSecurityCustomizer webSecurityCustomizer() {
-		return (web) -> web.ignoring().antMatchers("/webjars/**");
-	}
+    // @Bean
+	// WebSecurityCustomizer webSecurityCustomizer() {
+	// 	return (web) -> web.ignoring().antMatchers("/webjars/**");
+	// }
 
     // @formatter:off
     @Bean
@@ -40,6 +40,7 @@ public class SecurityConfig {
                 authorizeRequests
                     .antMatchers("/usercustom").hasRole("CUSTOM")
                     .antMatchers("/usergoogle").hasRole("GOOGLE")
+                    .antMatchers("/login/**").permitAll()
                     .antMatchers("/loginPage").permitAll();
                 authorizeRequests.anyRequest().authenticated();
             })

@@ -20,6 +20,7 @@ import com.nimbusds.jose.jwk.RSAKey;
 import com.nimbusds.jose.jwk.source.JWKSource;
 import com.nimbusds.jose.proc.SecurityContext;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.Ordered;
@@ -75,8 +76,11 @@ public class AuthorizationServerConfig {
 	}
 
 	@Bean
-	public ProviderSettings providerSettings() {
-		return ProviderSettings.builder().issuer("http://localhost:9000").build();
+	public ProviderSettings providerSettings(
+		// @Value("${application.issuser}") String issuserUrl
+	) {
+		// return ProviderSettings.builder().issuer(issuserUrl).build();
+		return ProviderSettings.builder().issuer("http://localhost:8081/auth").build();
 	}
 
 }

@@ -45,8 +45,8 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
         grantedAuthorities.add(new SimpleGrantedAuthority("ROLE_USER"));
 
-        LOG.debug("original password:" + appUser.getPassword() + " will be set as null");
+        LOG.debug("original password:" + appUser.getPassword());
 
-        return new User(appUser.getUsername(), null, grantedAuthorities);
+        return new User(appUser.getUsername(), appUser.getPassword(), grantedAuthorities);
     }
 }
