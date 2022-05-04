@@ -37,11 +37,11 @@ public class SecurityConfig {
 	SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 		http
 			.authorizeRequests(authorizeRequests ->{
-                authorizeRequests
-                    .antMatchers("/usercustom").hasRole("CUSTOM")
-                    .antMatchers("/usergoogle").hasRole("GOOGLE")
-                    .antMatchers("/login/**").permitAll()
-                    .antMatchers("/loginPage").permitAll();
+                // authorizeRequests
+                //     .antMatchers("/usercustom").hasRole("CUSTOM")
+                //     .antMatchers("/usergoogle").hasRole("GOOGLE")
+                //     .antMatchers("/login/**").permitAll()
+                //     .antMatchers("/loginPage").permitAll();
                 authorizeRequests.anyRequest().authenticated();
             })
 			.oauth2Login(oauth2Login ->{
