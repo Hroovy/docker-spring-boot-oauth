@@ -8,3 +8,4 @@
 ssoserver/.vscode/
 ssoclient/.vscode/
 ssoentity/.vscode/
+/logs/
