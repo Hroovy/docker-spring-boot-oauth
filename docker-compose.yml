@@ -22,11 +22,12 @@ services:
     volumes:
       - ${PWD}/4.4.0/.config/code-server/config.yaml:/root/.config/code-server/config.yaml
       - ${PWD}:/root/external
+    ports:
+      - "8080-8082:8080-8082"
+      - "9000:9000"
+    entrypoint: code-server
     environment:
       - TZ=Asia/Macau
-    entrypoint: bash
-    stdin_open: true
-    tty: true
 
 #  node1:
 #    image: maven-xserver # or maven:3.6.0-jdk-11 if you run without IDE
