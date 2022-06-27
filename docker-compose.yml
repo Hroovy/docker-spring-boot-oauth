@@ -17,9 +17,10 @@ services:
       - 127.0.0.1:8120:8080
 
   compiler:
-    image: wingzzz2003/codeserver_ubuntu:4.3.0
+    image: wingzzz2003/codeserver_ubuntu:4.4.0
     restart: always
     volumes:
+      - ${PWD}/4.4.0/.config/code-server/config.yaml:/root/.config/code-server/config.yaml
       - ${PWD}:/root/external
     environment:
       - TZ=Asia/Macau
