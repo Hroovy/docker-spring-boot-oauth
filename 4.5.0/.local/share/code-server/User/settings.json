@@ -11,5 +11,6 @@
           "path": "/usr/lib/jvm/java-17-openjdk-amd64/bin/java",
         },
     ],
-    "redhat.telemetry.enabled": false
+    "redhat.telemetry.enabled": false,
+    "editor.multiCursorModifier": "ctrlCmd"
 }

@@ -57,6 +57,27 @@ psql -v ON_ERROR_STOP=1 --username "$POSTGRES_USER" --dbname "$POSTGRES_DB" <<-E
 
     INSERT INTO "oauth2_registered_client" ("id", "client_id", "client_id_issued_at", "client_secret", "client_secret_expires_at", "client_name", "client_authentication_methods", "authorization_grant_types", "redirect_uris", "scopes", "client_settings", "token_settings") VALUES
     ('7eb74be4-af92-4af1-92ca-d0c25a280dca',	'messaging-client',	'2022-07-03 18:15:58.385897',	'{noop}secret',	NULL,	'7eb74be4-af92-4af1-92ca-d0c25a280dca',	'client_secret_basic',	'refresh_token,client_credentials,authorization_code',	'http://127.0.0.1:8080/authorized,http://127.0.0.1:8080/login/oauth2/code/messaging-client-oidc',	'openid,message.read,message.write',	'{"@class":"java.util.Collections\$UnmodifiableMap","settings.client.require-proof-key":false,"settings.client.require-authorization-consent":true}',	'{"@class":"java.util.Collections\$UnmodifiableMap","settings.token.reuse-refresh-tokens":true,"settings.token.id-token-signature-algorithm":["org.springframework.security.oauth2.jose.jws.SignatureAlgorithm","RS256"],"settings.token.access-token-time-to-live":["java.time.Duration",300.000000000],"settings.token.access-token-format":{"@class":"org.springframework.security.oauth2.core.OAuth2TokenFormat","value":"self-contained"},"settings.token.refresh-token-time-to-live":["java.time.Duration",3600.000000000]}');
+    INSERT INTO "oauth2_registered_client" ("id", "client_id", "client_id_issued_at", "client_secret", "client_secret_expires_at", "client_name", "client_authentication_methods", "authorization_grant_types", "redirect_uris", "scopes", "client_settings", "token_settings") VALUES
+    ('2222222222222222',	'messaging-client2',	'2022-07-03 18:15:58.385897',	'\$2a\$12\$6patnf/iijlCCXtCOkniCO.jKWubx79gR.DIpfxW0P0Ew37dDJIl6',	NULL,	'2222222222222222',	'client_secret_basic',	'refresh_token,client_credentials,authorization_code',	'http://127.0.0.1:8080/authorized,http://127.0.0.1:8080/login/oauth2/code/messaging-client-oidc',	'openid,message.read,message.write',	'{"@class":"java.util.Collections\$UnmodifiableMap","settings.client.require-proof-key":false,"settings.client.require-authorization-consent":true}',	'{"@class":"java.util.Collections\$UnmodifiableMap","settings.token.reuse-refresh-tokens":true,"settings.token.id-token-signature-algorithm":["org.springframework.security.oauth2.jose.jws.SignatureAlgorithm","RS256"],"settings.token.access-token-time-to-live":["java.time.Duration",300.000000000],"settings.token.access-token-format":{"@class":"org.springframework.security.oauth2.core.OAuth2TokenFormat","value":"self-contained"},"settings.token.refresh-token-time-to-live":["java.time.Duration",3600.000000000]}');
+
+    DROP TABLE IF EXISTS "app_user";
+    DROP SEQUENCE IF EXISTS app_user_id_seq;
+    CREATE SEQUENCE app_user_id_seq INCREMENT 1 MINVALUE 1 MAXVALUE 2147483647 CACHE 1;
+
+    CREATE TABLE "public"."app_user" (
+        "id" integer DEFAULT nextval('app_user_id_seq') NOT NULL,
+        "display_name" character varying(255),
+        "email" character varying(255),
+        "is_active" character varying(255),
+        "last_modified_by" character varying(255),
+        "last_modified_date" timestamp,
+        "password" character varying(255),
+        "username" character varying(255),
+        CONSTRAINT "app_user_pkey" PRIMARY KEY ("id")
+    ) WITH (oids = false);
+
+    INSERT INTO "app_user" ("display_name", "email", "is_active", "last_modified_by", "last_modified_date", "password", "username") VALUES
+    ('John Don',	'john@test',	'Y',	'system',	'2022-07-04 09:46:25.112214',	'\$2a\$12\$cLQ0N0QwCSUk2TZvb1b8neYZJmYxZCwosyJ3C2fka5soEK6TR1mR.',	'john');
 
     CREATE TABLE SPRING_SESSION (
         PRIMARY_ID CHAR(36) NOT NULL,

@@ -26,7 +26,6 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.OAuth2AuthorizationServerConfiguration;
 import org.springframework.security.oauth2.server.authorization.JdbcOAuth2AuthorizationConsentService;
@@ -37,6 +36,7 @@ import org.springframework.security.oauth2.server.authorization.client.JdbcRegis
 import org.springframework.security.oauth2.server.authorization.client.RegisteredClientRepository;
 import org.springframework.security.oauth2.server.authorization.config.ProviderSettings;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.LoginUrlAuthenticationEntryPoint;
 
 import kit.personal.ssoserver.jose.Jwks;
 
@@ -47,7 +47,13 @@ public class AuthorizationServerConfig {
 	@Order(Ordered.HIGHEST_PRECEDENCE)
 	public SecurityFilterChain authorizationServerSecurityFilterChain(HttpSecurity http) throws Exception {
 		OAuth2AuthorizationServerConfiguration.applyDefaultSecurity(http);
-		return http.formLogin(Customizer.withDefaults()).build();
+		// @formatter:off
+		http
+			.exceptionHandling(exceptions ->
+				exceptions.authenticationEntryPoint(new LoginUrlAuthenticationEntryPoint("/login"))
+			);
+		// @formatter:on
+		return http.build();
 	}
 
 	@Bean
@@ -77,10 +83,10 @@ public class AuthorizationServerConfig {
 
 	@Bean
 	public ProviderSettings providerSettings(
-		// @Value("${application.issuser}") String issuserUrl
+		@Value("${application.issuser}") String issuserUrl
 	) {
-		// return ProviderSettings.builder().issuer(issuserUrl).build();
-		return ProviderSettings.builder().issuer("http://localhost:8081/auth").build();
+		return ProviderSettings.builder().issuer(issuserUrl).build();
+		// return ProviderSettings.builder().issuer("http://localhost:8081/auth").build();
 	}
 
 }
