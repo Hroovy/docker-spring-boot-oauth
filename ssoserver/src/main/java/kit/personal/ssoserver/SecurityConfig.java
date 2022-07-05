@@ -13,6 +13,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.ldap.authentication.ad.ActiveDirectoryLdapAuthenticationProvider;
 import org.springframework.security.web.SecurityFilterChain;
 
+import static org.springframework.security.config.Customizer.withDefaults;
+
 @EnableWebSecurity
 public class SecurityConfig {
     @Autowired
@@ -39,6 +41,7 @@ public class SecurityConfig {
             authorizeRequests.antMatchers("/css/**").permitAll();
             authorizeRequests.anyRequest().authenticated();
         })
+        // .formLogin(withDefaults());
                 .formLogin().loginPage("/login").failureUrl("/login-error").permitAll();
 
         return http.build();

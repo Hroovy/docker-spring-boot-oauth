@@ -17,7 +17,7 @@ generate access token by client_credentials or authorization_code, password auth
 
 use access token to get value
 ```bash
-curl http://localhost:8082/auth/user/me -H "Authorization: Bearer 5a428f4c-3356-41c3-9a57-ca54971d75e0"
+curl http://localhost:8082/res/user/read -H "Authorization: Bearer xxxx"
 
 curl -v -X GET \
 	http://localhost:8090/messages \
