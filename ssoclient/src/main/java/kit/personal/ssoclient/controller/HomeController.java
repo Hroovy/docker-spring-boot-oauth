@@ -62,7 +62,7 @@ public class HomeController{
             .build();
 
         HttpRequest request = HttpRequest.newBuilder()
-            .uri(URI.create(ssoserverBaseURL + "/oauth2/revoke"))
+            .uri(URI.create(ssoserverBaseURL + "/oauth2/revoke")) // TODO update according to new api, with header base64(client_id:secret), token=xxx and token_type=access_token
             .timeout(Duration.ofMinutes(2))
             .header("Authorization", "Bearer " + authorizedClient.getAccessToken().getTokenValue())
             .POST(BodyPublishers.ofString(""))
@@ -100,7 +100,8 @@ public class HomeController{
     public String userinfo(OAuth2AuthenticationToken authentication) {
 
         OAuth2AuthorizedClient authorizedClient = this.getAuthorizedClient(authentication);
-        String ret = "token:" + authorizedClient.getAccessToken().getTokenValue();
+        String ret = "accessToken:" + authorizedClient.getAccessToken().getTokenValue();
+        ret += ", refreshToken:" + authorizedClient.getRefreshToken().getTokenValue();
         ret += ", userName:" + authentication.getName();
         ret += ", clientName:" + authorizedClient.getClientRegistration().getClientName();
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
