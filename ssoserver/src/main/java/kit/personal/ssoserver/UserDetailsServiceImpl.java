@@ -43,6 +43,8 @@ public class UserDetailsServiceImpl implements UserDetailsService {
             grantedAuthorities.add(new SimpleGrantedAuthority("ROLE_" + role.getAppId() + "_" + role.getAppRole()));
         }
 
+        grantedAuthorities.add(new SimpleGrantedAuthority("ROLE_SERVER"));
+        grantedAuthorities.add(new SimpleGrantedAuthority("ROLE_NEW_SERVER_USER"));
         grantedAuthorities.add(new SimpleGrantedAuthority("ROLE_USER"));
 
         LOG.debug("original password:" + appUser.getPassword());

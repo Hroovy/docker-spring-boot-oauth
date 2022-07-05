@@ -1,46 +1,28 @@
 Build a spring boot oauth server with mysql db
 
-## docker
+## docker ide 
 linux container
 
-    $> docker-composer up # create env
+    $> docker-composer up -d # create env
     $> docker-composer start # rerun env
     $> docker-composer stop # stop env
     $> docker-composer down # delete env
 
+visit localhost:9001 for IDE interface, login password "admin"
 
 ## testing command
 
-### test user password authentication
-generate access token
-```bash
-curl -X POST \
-	http://localhost:8081/auth/oauth/token \
-	-F grant_type=password \
-	-F username=john \
-	-F password=456 \
-	-F client_id=spring-security-oauth2-read-write-client \
-	-F client_secret=spring-security-oauth2-read-write-client-password1234
-
-curl -X POST \
-	http://localhost:8081/auth/oauth/token \
-	-F grant_type=password \
-	-F username=john \
-	-F password=456 \
-	-F client_id=spring-security-oauth2-read-client \
-	-F client_secret=spring-security-oauth2-read-client-password1234
-```
+### authentication
+generate access token by client_credentials or authorization_code, password authenication is not support.
 
 use access token to get value
 ```bash
-curl http://localhost:8081/auth/user/me -H "Authorization: Bearer 5a428f4c-3356-41c3-9a57-ca54971d75e0"
+curl http://localhost:8082/auth/user/me -H "Authorization: Bearer 5a428f4c-3356-41c3-9a57-ca54971d75e0"
 
 curl -v -X GET \
 	http://localhost:8090/messages \
 	-H "Authorization: Bearer xxxxxxxverylongtoken"
 ```
-
-
 
 revoke
 ```bash
